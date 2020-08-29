@@ -13,6 +13,7 @@ load_dotenv()
 
 CHROME_DRIVER_PATH = os.getenv("CHROME_DRIVER_PATH")
 IS_PRODUCTION_MODE_SET = os.getenv("IS_PRODUCTION_MODE_SET")
+SHOULD_PERFORM_TRADE = os.getenv("SHOULD_PERFORM_TRADE")
 
 if IS_PRODUCTION_MODE_SET == 'true':
   login_username = os.getenv("PRODUCTION_USERNAME")
@@ -22,32 +23,38 @@ else:
   login_password = os.getenv("TESTING_PASSWORD")
 
 
+# Trade Params
 amount = str(50)
 stopLoss = str(-2.0)
 takeProfit = str(0.50)
+
+
+# Init Chrome Driver
 options = webdriver.ChromeOptions()
 options.add_argument("--disable-blink-features")
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument("--start-maximized")
 options.add_argument("--kiosk")
 driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
-#driver = webdriver.Chrome(options=options)
-driver.get("https://www.etoro.com/login")
 
+
+# Log In
+driver.get("https://www.etoro.com/login")
 time.sleep(1)
 driver.find_element_by_xpath("//input[@automation-id='login-sts-username-input']").send_keys(login_username)
 time.sleep(1)
 driver.find_element_by_xpath("//input[@automation-id='login-sts-password-input']").send_keys(login_password)
 time.sleep(1)
 driver.find_element_by_xpath("//button[@automation-id='login-sts-btn-sign-in']").click()
-WebDriverWait(driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
-driver.get("https://www.etoro.com/markets/nvda")
 
 
-time.sleep(5)
-driver.quit()
+# Maybe break exec
+if SHOULD_PERFORM_TRADE == 'false':
+  time.sleep(5)
+  driver.quit()
 
 
+# Select portfolio type
 WebDriverWait(driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
 menu = driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
 menu.find_element_by_xpath("//div[contains(text(),'Real')]").click()
@@ -55,6 +62,12 @@ menu.find_element_by_xpath("//span[contains(text(),'Virtual Portfolio')]").click
 dial = driver.find_element_by_xpath("//div[@class='cdk-overlay-pane']")
 dial.find_element_by_xpath("//a[contains(text(),'Go to Virtual Portfolio')]").click()
 time.sleep(5)
+
+
+# Go to stock url
+driver.get("https://www.etoro.com/markets/nvda")
+
+# Perform trade
 WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
 head = driver.find_element_by_xpath("//div[@class='user-market-head']")
 head.find_element_by_xpath("//div[@automation-id='trade-button']").click()
