@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 # Load Env variables:
 load_dotenv()
 
+CHROME_DRIVER_PATH = os.getenv("CHROME_DRIVER_PATH")
 IS_PRODUCTION_MODE_SET = os.getenv("IS_PRODUCTION_MODE_SET")
 
 if IS_PRODUCTION_MODE_SET == 'true':
@@ -29,9 +30,10 @@ options.add_argument("--disable-blink-features")
 options.add_argument("--disable-blink-features=AutomationControlled")
 options.add_argument("--start-maximized")
 options.add_argument("--kiosk")
-driver = webdriver.Chrome(executable_path="c:\Program Files (x86)\chromedriver.exe", options=options)
+driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
 #driver = webdriver.Chrome(options=options)
 driver.get("https://www.etoro.com/login")
+
 time.sleep(1)
 driver.find_element_by_xpath("//input[@automation-id='login-sts-username-input']").send_keys(login_username)
 time.sleep(1)
