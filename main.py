@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 import sys
 import os
 from dotenv import load_dotenv
+import redis
 
 # Load Env variables:
 load_dotenv()
@@ -22,6 +23,12 @@ else:
   login_username = os.getenv("TESTING_USERNAME")
   login_password = os.getenv("TESTING_PASSWORD")
 
+# Load Redis
+redisClient = redis.StrictRedis(host=os.getenv("REDIS_HOST"),
+                                port=os.getenv("REDIS_PORT"),
+                                db=os.getenv("REDIS_DB"),
+                                password=os.getenv("REDIS_PASSWORD"))
+tickersSet = "tickersSet"
 
 # Trade Params
 amount = str(50)
@@ -48,13 +55,8 @@ time.sleep(1)
 driver.find_element_by_xpath("//button[@automation-id='login-sts-btn-sign-in']").click()
 
 
-# Maybe break exec
-if SHOULD_PERFORM_TRADE == 'false':
-  time.sleep(5)
-  driver.quit()
-
-
 # Select portfolio type
+driver.get("https://www.etoro.com/markets/nvda")
 WebDriverWait(driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
 menu = driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
 menu.find_element_by_xpath("//div[contains(text(),'Real')]").click()
@@ -64,8 +66,17 @@ dial.find_element_by_xpath("//a[contains(text(),'Go to Virtual Portfolio')]").cl
 time.sleep(5)
 
 
-# Go to stock url
-driver.get("https://www.etoro.com/markets/nvda")
+while True:
+  ticker = redisClient.spop(tickersSet)
+  if ticker is not None:
+    # Go to stock url
+    driver.get("https://www.etoro.com/markets/" + ticker.decode('utf-8'))
+  time.sleep(3)    
+
+# Maybe break exec
+if SHOULD_PERFORM_TRADE == 'false':
+  time.sleep(5)
+  driver.quit()
 
 # Perform trade
 WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
