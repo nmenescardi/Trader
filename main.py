@@ -1,9 +1,11 @@
 from selenium import webdriver
 import time
+import random
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 import sys
 import os
 from dotenv import load_dotenv
@@ -32,8 +34,8 @@ tickersSet = "tickersSet"
 
 # Trade Params
 amount = str(50)
-stopLoss = str(-2.0)
-takeProfit = str(0.50)
+stopLoss = str(-2)
+takeProfit = str(0.5)
 
 
 # Init Chrome Driver
@@ -47,11 +49,11 @@ driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
 
 # Log In
 driver.get("https://www.etoro.com/login")
-time.sleep(1)
+time.sleep(random.uniform(0.9, 2.8))
 driver.find_element_by_xpath("//input[@automation-id='login-sts-username-input']").send_keys(login_username)
-time.sleep(1)
+time.sleep(random.uniform(0.9, 2.8))
 driver.find_element_by_xpath("//input[@automation-id='login-sts-password-input']").send_keys(login_password)
-time.sleep(1)
+time.sleep(random.uniform(0.9, 2.8))
 driver.find_element_by_xpath("//button[@automation-id='login-sts-btn-sign-in']").click()
 
 
@@ -63,7 +65,7 @@ menu.find_element_by_xpath("//div[contains(text(),'Real')]").click()
 menu.find_element_by_xpath("//span[contains(text(),'Virtual Portfolio')]").click()
 dial = driver.find_element_by_xpath("//div[@class='cdk-overlay-pane']")
 dial.find_element_by_xpath("//a[contains(text(),'Go to Virtual Portfolio')]").click()
-time.sleep(5)
+time.sleep(random.uniform(3.01, 6.11))
 
 
 while True:
@@ -71,46 +73,51 @@ while True:
   if ticker is not None:
     # Go to stock url
     driver.get("https://www.etoro.com/markets/" + ticker.decode('utf-8'))
-  time.sleep(3)    
+  
+    # Maybe break exec
+    if SHOULD_PERFORM_TRADE == 'false':
+      time.sleep(random.uniform(3.01, 6.11))
+      driver.quit()
 
-# Maybe break exec
-if SHOULD_PERFORM_TRADE == 'false':
-  time.sleep(5)
-  driver.quit()
-
-# Perform trade
-WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
-head = driver.find_element_by_xpath("//div[@class='user-market-head']")
-head.find_element_by_xpath("//div[@automation-id='trade-button']").click()
-time.sleep(5)
-driver.find_element_by_xpath("//div[@data-etoro-automation-id='minus-button']").click()
-driver.find_element_by_xpath("//div[@data-etoro-automation-id='plus-button']").click()
-time.sleep(1)
-driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
-time.sleep(1)
-driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(amount + Keys.ENTER)
-time.sleep(1)
-time.sleep(1)
-driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']").click()
-time.sleep(1)
-#driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']").click()
-time.sleep(1)
-driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
-time.sleep(1)
-driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(stopLoss + Keys.ENTER)
-time.sleep(1)
-driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-leverage-tab-title-value']").click()
-time.sleep(1)
-driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-take-profit-tab-title-value']").click()
-time.sleep(1)
-#driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-take-profit-rate-editing-switch-to-amount-button']").click()
-time.sleep(1)
-driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
-time.sleep(1)
-driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(takeProfit + Keys.ENTER)
-time.sleep(1)
-driver.find_element_by_xpath("//button[@data-etoro-automation-id='execution-open-entry-order-button']").click()
-time.sleep(5)
+    # Perform trade
+    WebDriverWait(driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
+    time.sleep(random.uniform(3.01, 6.11))
+    head = driver.find_element_by_xpath("//div[@class='user-market-head']")
+    head.find_element_by_xpath("//div[@automation-id='trade-button']").click()
+    time.sleep(random.uniform(3.01, 6.11))
+    driver.find_element_by_xpath("//div[@data-etoro-automation-id='minus-button']").click()
+    driver.find_element_by_xpath("//div[@data-etoro-automation-id='plus-button']").click()
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(amount + Keys.ENTER)
+    time.sleep(random.uniform(0.9, 2.8))
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']").click()
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']").click()
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(stopLoss + Keys.ENTER)
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-leverage-tab-title-value']").click()
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-take-profit-tab-title-value']").click()
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-take-profit-rate-editing-switch-to-amount-button']").click()
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
+    time.sleep(random.uniform(0.9, 2.8))
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(takeProfit + Keys.ENTER)
+    time.sleep(random.uniform(0.9, 2.8))
+    
+    try:
+        driver.find_element_by_xpath("//button[@data-etoro-automation-id='execution-open-entry-order-button']").click()
+    except NoSuchElementException:
+        driver.find_element_by_xpath("//button[@data-etoro-automation-id='execution-open-position-button']").click()
+  
+    time.sleep(random.uniform(3.01, 6.11))
+    
 driver.quit()
-
-
+time.sleep(3)    
