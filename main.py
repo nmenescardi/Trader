@@ -1,7 +1,6 @@
 from selenium import webdriver
-import os
+import os, redis
 from dotenv import load_dotenv
-import redis
 from Position import Position
 from Credentials import Credentials
 from EToro import EToro
