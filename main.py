@@ -10,6 +10,7 @@ import sys
 import os
 from dotenv import load_dotenv
 import redis
+from Position import Position
 
 # Load Env variables:
 load_dotenv()
@@ -33,10 +34,7 @@ redisClient = redis.StrictRedis(host=os.getenv("REDIS_HOST"),
 tickersSet = "tickersSet"
 
 # Trade Params
-amount = str(50)
-stopLoss = str(-2)
-takeProfit = str(0.5)
-
+position = Position(amount = 50, stopLoss = -2, takeProfit = 0.5, isBuyingPosition = True)
 
 # Init Chrome Driver
 options = webdriver.ChromeOptions()
@@ -90,7 +88,7 @@ while True:
     time.sleep(random.uniform(0.9, 2.8))
     driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
     time.sleep(random.uniform(0.9, 2.8))
-    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(amount + Keys.ENTER)
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(str(position.amount) + Keys.ENTER)
     time.sleep(random.uniform(0.9, 2.8))
     time.sleep(random.uniform(0.9, 2.8))
     driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']").click()
@@ -99,7 +97,7 @@ while True:
     time.sleep(random.uniform(0.9, 2.8))
     driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
     time.sleep(random.uniform(0.9, 2.8))
-    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(stopLoss + Keys.ENTER)
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(str(position.stopLoss) + Keys.ENTER)
     time.sleep(random.uniform(0.9, 2.8))
     driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-leverage-tab-title-value']").click()
     time.sleep(random.uniform(0.9, 2.8))
@@ -109,7 +107,7 @@ while True:
     time.sleep(random.uniform(0.9, 2.8))
     driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
     time.sleep(random.uniform(0.9, 2.8))
-    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(takeProfit + Keys.ENTER)
+    driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(str(position.takeProfit) + Keys.ENTER)
     time.sleep(random.uniform(0.9, 2.8))
     
     try:
