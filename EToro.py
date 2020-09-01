@@ -31,6 +31,56 @@ class EToro:
 		dial.find_element_by_xpath("//a[contains(text(),'Go to Virtual Portfolio')]").click()	
 		self.wait(factor = 2)
 
+	def open_position(self, position):
+		# Go to stock url
+		self.driver.get("https://www.etoro.com/markets/" + position.ticker)
+		
+  	# Perform trade
+		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
+		self.wait(factor = 2)
+		head = self.driver.find_element_by_xpath("//div[@class='user-market-head']")
+		head.find_element_by_xpath("//div[@automation-id='trade-button']").click()
+		self.wait(factor = 2)
+  
+		try:
+			self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='minus-button']").click()
+			self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='plus-button']").click()
+		except NoSuchElementException:
+			pass
+ 
+		self.wait()
+		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
+		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
+		self.wait()
+		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(str(position.amount) + Keys.ENTER)
+		self.wait()
+		self.wait()
+		self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']").click()
+		self.wait()
+		self.driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']").click()
+		self.wait()
+		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
+		self.wait()
+		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(str(position.stopLoss) + Keys.ENTER)
+		self.wait()
+		self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-leverage-tab-title-value']").click()
+		self.wait()
+		self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-take-profit-tab-title-value']").click()
+		self.wait()
+		self.driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-take-profit-rate-editing-switch-to-amount-button']").click()
+		self.wait()
+		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
+		self.wait()
+		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(str(position.takeProfit) + Keys.ENTER)
+		self.wait()
+  
+		try:
+			self.driver.find_element_by_xpath("//button[@data-etoro-automation-id='execution-open-entry-order-button']").click()
+		except NoSuchElementException:
+			self.driver.find_element_by_xpath("//button[@data-etoro-automation-id='execution-open-position-button']").click()
+
+		self.wait(factor = 2)
+  
   
 	def wait(self, factor = 1):
 		time.sleep(random.uniform(0.9 * factor, 2.8  * factor))
