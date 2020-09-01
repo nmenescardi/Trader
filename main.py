@@ -11,6 +11,8 @@ import os
 from dotenv import load_dotenv
 import redis
 from Position import Position
+from Credentials import Credentials
+from EToro import EToro
 
 # Load Env variables:
 load_dotenv()
@@ -20,11 +22,13 @@ IS_PRODUCTION_MODE_SET = os.getenv("IS_PRODUCTION_MODE_SET")
 SHOULD_PERFORM_TRADE = os.getenv("SHOULD_PERFORM_TRADE")
 
 if IS_PRODUCTION_MODE_SET == 'true':
-  login_username = os.getenv("PRODUCTION_USERNAME")
-  login_password = os.getenv("PRODUCTION_PASSWORD")
+  username = os.getenv("PRODUCTION_USERNAME")
+  password = os.getenv("PRODUCTION_PASSWORD")
 else:
-  login_username = os.getenv("TESTING_USERNAME")
-  login_password = os.getenv("TESTING_PASSWORD")
+  username = os.getenv("TESTING_USERNAME")
+  password = os.getenv("TESTING_PASSWORD")
+
+credentials = Credentials(username, password)
 
 # Load Redis
 redisClient = redis.StrictRedis(host=os.getenv("REDIS_HOST"),
@@ -44,27 +48,11 @@ options.add_argument("--start-maximized")
 options.add_argument("--kiosk")
 driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
 
+eToro = EToro(driver, credentials)
 
-# Log In
-driver.get("https://www.etoro.com/login")
-time.sleep(random.uniform(0.9, 2.8))
-driver.find_element_by_xpath("//input[@automation-id='login-sts-username-input']").send_keys(login_username)
-time.sleep(random.uniform(0.9, 2.8))
-driver.find_element_by_xpath("//input[@automation-id='login-sts-password-input']").send_keys(login_password)
-time.sleep(random.uniform(0.9, 2.8))
-driver.find_element_by_xpath("//button[@automation-id='login-sts-btn-sign-in']").click()
+eToro.log_in()
 
-
-# Select portfolio type
-driver.get("https://www.etoro.com/markets/nvda")
-WebDriverWait(driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
-menu = driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
-menu.find_element_by_xpath("//div[contains(text(),'Real')]").click()
-menu.find_element_by_xpath("//span[contains(text(),'Virtual Portfolio')]").click()
-dial = driver.find_element_by_xpath("//div[@class='cdk-overlay-pane']")
-dial.find_element_by_xpath("//a[contains(text(),'Go to Virtual Portfolio')]").click()
-time.sleep(random.uniform(3.01, 6.11))
-
+eToro.select_portfolio(isRealPortfolio = False)
 
 while True:
   ticker = redisClient.spop(tickersSet)
