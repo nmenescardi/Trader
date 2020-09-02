@@ -81,6 +81,17 @@ class EToro:
 
 		self.wait(factor = 2)
   
+	def click(self, xPath):
+		self.driver.find_element_by_xpath(xPath).click()
+  
+	def send_keys(self, xPath, keys, index = 1):
+		self.driver.find_elements_by_xpath(xPath)[index].send_keys(keys)
+  
+	def backspace(self):
+		return Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE
+
+	def close_position(self, position):
+		pass
   
 	def wait(self, factor = 1):
 		time.sleep(random.uniform(0.9 * factor, 2.8  * factor))
