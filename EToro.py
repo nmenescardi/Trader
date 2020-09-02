@@ -14,22 +14,23 @@ class EToro:
 	def log_in(self):
 		self.driver.get("https://www.etoro.com/login")
 		self.wait()
-		self.driver.find_element_by_xpath("//input[@automation-id='login-sts-username-input']").send_keys(self.credentials.username)
+		self.send_keys("//input[@automation-id='login-sts-username-input']", self.credentials.username)
 		self.wait()
-		self.driver.find_element_by_xpath("//input[@automation-id='login-sts-password-input']").send_keys(self.credentials.password)
+		self.send_keys("//input[@automation-id='login-sts-password-input']", self.credentials.password)
 		self.wait()
-		self.driver.find_element_by_xpath("//button[@automation-id='login-sts-btn-sign-in']").click()
+		self.click("//button[@automation-id='login-sts-btn-sign-in']")
 
 
-	def select_portfolio(self, isRealPortfolio = False):
+	def select_virtual_portfolio(self):
 		WebDriverWait(self.driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
 		menu = self.driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
-		menu.find_element_by_xpath("//div[contains(text(),'Real')]").click() 
+		self.click("//div[contains(text(),'Real')]", menu)
 		self.wait(factor = 2)
-		menu.find_element_by_xpath("//span[contains(text(),'Virtual Portfolio')]").click()
+		self.click("//span[contains(text(),'Virtual Portfolio')]", menu)
 		dial = self.driver.find_element_by_xpath("//div[@class='cdk-overlay-pane']")
-		dial.find_element_by_xpath("//a[contains(text(),'Go to Virtual Portfolio')]").click()	
+		self.click("//a[contains(text(),'Go to Virtual Portfolio')]", dial)
 		self.wait(factor = 2)
+
 
 	def open_position(self, position):
 		# Go to stock url
@@ -39,12 +40,12 @@ class EToro:
 		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
 		self.wait(factor = 2)
 		head = self.driver.find_element_by_xpath("//div[@class='user-market-head']")
-		head.find_element_by_xpath("//div[@automation-id='trade-button']").click()
+		self.click("//div[@automation-id='trade-button']", head)
 		self.wait(factor = 2)
   
 		try:
-			self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='minus-button']").click()
-			self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='plus-button']").click()
+			self.click("//div[@data-etoro-automation-id='minus-button']")
+			self.click("//div[@data-etoro-automation-id='plus-button']")
 		except NoSuchElementException:
 			pass
  
@@ -53,45 +54,65 @@ class EToro:
 		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
 		self.wait()
 		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[0].send_keys(str(position.amount) + Keys.ENTER)
+		self.wait(factor = 2)
+		self.click("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']")
 		self.wait()
-		self.wait()
-		self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']").click()
-		self.wait()
-		self.driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']").click()
-		self.wait()
+	
+		try:
+			self.click("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']")
+			self.wait()
+		except NoSuchElementException:
+			pass
+ 
 		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
 		self.wait()
 		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(str(position.stopLoss) + Keys.ENTER)
 		self.wait()
-		self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-leverage-tab-title-value']").click()
+		self.click("//div[@data-etoro-automation-id='execution-leverage-tab-title-value']")
 		self.wait()
-		self.driver.find_element_by_xpath("//div[@data-etoro-automation-id='execution-take-profit-tab-title-value']").click()
+		self.click("//div[@data-etoro-automation-id='execution-take-profit-tab-title-value']")
 		self.wait()
-		self.driver.find_element_by_xpath("//a[@data-etoro-automation-id='execution-take-profit-rate-editing-switch-to-amount-button']").click()
-		self.wait()
+		
+		try:
+			self.click("//a[@data-etoro-automation-id='execution-take-profit-rate-editing-switch-to-amount-button']")
+			self.wait()
+		except NoSuchElementException:
+			pass
+ 
 		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
 		self.wait()
 		self.driver.find_elements_by_xpath("//input[@data-etoro-automation-id='input']")[1].send_keys(str(position.takeProfit) + Keys.ENTER)
 		self.wait()
   
 		try:
-			self.driver.find_element_by_xpath("//button[@data-etoro-automation-id='execution-open-entry-order-button']").click()
+			self.click("//button[@data-etoro-automation-id='execution-open-entry-order-button']")
 		except NoSuchElementException:
-			self.driver.find_element_by_xpath("//button[@data-etoro-automation-id='execution-open-position-button']").click()
+			self.click("//button[@data-etoro-automation-id='execution-open-position-button']")
 
 		self.wait(factor = 2)
-  
-	def click(self, xPath):
-		self.driver.find_element_by_xpath(xPath).click()
-  
-	def send_keys(self, xPath, keys, index = 1):
-		self.driver.find_elements_by_xpath(xPath)[index].send_keys(keys)
-  
+
+
+	def click(self, xPath, container = None):
+		if container is None:
+			self.driver.find_element_by_xpath(xPath).click()
+		else:
+			container.find_element_by_xpath(xPath).click()
+
+ 
+	def send_keys(self, xPath, keys, index = None):
+		if not index:
+			self.driver.find_element_by_xpath(xPath).send_keys(keys)
+		else:
+			self.driver.find_elements_by_xpath(xPath)[index].send_keys(keys)
+
+
 	def backspace(self):
 		return Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE
 
+
 	def close_position(self, position):
 		pass
-  
+
+
 	def wait(self, factor = 1):
 		time.sleep(random.uniform(0.9 * factor, 2.8  * factor))

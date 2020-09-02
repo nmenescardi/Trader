@@ -40,7 +40,9 @@ eToro = EToro(driver, credentials)
 
 eToro.log_in()
 
-eToro.select_portfolio(isRealPortfolio = False)
+isRealPortfolio = False #TODO: from env file
+if not isRealPortfolio:
+  eToro.select_virtual_portfolio()
 
 while True:
   ticker = redisClient.spop(tickersSet)
