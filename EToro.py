@@ -93,9 +93,21 @@ class EToro:
 		return str(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
 
 
-	def close_position(self, position):
-		pass
-
+	def close_position(self, ticker):
+		target_url = "https://www.etoro.com/portfolio/" + ticker
+		self.driver.get(target_url)
+		self.wait(factor = 2.5)
+		
+		if self.driver.current_url != target_url:
+			print("There is no open position for {}.".format(ticker))
+			return
+ 
+		try:
+			self.click("//div[@data-etoro-automation-id='open-trades-table-body-cell-user-actions-close-button']")
+			self.click("//button[@data-etoro-automation-id='close-position-close-button']")
+		except NoSuchElementException:
+			pass
+		
 
 	def wait(self, factor = 1):
 		time.sleep(random.uniform(0.9 * factor, 2.8  * factor))
