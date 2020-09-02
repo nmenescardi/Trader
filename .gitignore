@@ -2,3 +2,4 @@
 test*.py
 *.pyc
 debug.log
+original_files/
