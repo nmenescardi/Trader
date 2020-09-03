@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class EToro:
 
@@ -33,21 +33,25 @@ class EToro:
 		self.driver.get("https://www.etoro.com/markets/" + position.ticker)
 		
  		# Perform trade
-		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
+		self.wait_for_element("//div[@automation-id='trade-button']", 0)
 		self.wait()
-		head = self.driver.find_element_by_xpath("//div[@class='user-market-head']")
-		self.click("//div[@automation-id='trade-button']", head)
+		self.click_trade_button()
 
-		#TODO: handle TimeoutException with a refresh? or just do nothing. When the trade
-		# cannot be opened.
-		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
+		was_found = self.wait_for_element(
+      		xPath = "//input[@data-etoro-automation-id='input']", 
+        	times = 3,
+			action = lambda: self.click_trade_button()
+			#action = self.click_trade_button
+        )
+		if not was_found: #TODO: raise a custom exception instead of this, eg: OpenOrderException
+			return
+
 		self.wait()
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 0)
 		self.send_keys("//input[@data-etoro-automation-id='input']", str(position.amount) + Keys.ENTER, 0)
 		self.click("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']")
 	
 		self.click("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']")
-
 
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 1)
 		self.send_keys("//input[@data-etoro-automation-id='input']", str(position.stopLoss) + Keys.ENTER, 1)
@@ -82,6 +86,14 @@ class EToro:
 		self.wait()
  
  
+	def click_trade_button(self):
+		try:
+			head = self.driver.find_element_by_xpath("//div[@class='user-market-head']")
+			self.click("//div[@automation-id='trade-button']", head)
+		except NoSuchElementException:
+			pass
+ 
+ 
 	def send_keys(self, xPath, keys, index = None):
 		try:
 			if not index:
@@ -112,6 +124,23 @@ class EToro:
 		except NoSuchElementException:
 			pass
 		
+  
+	def wait_for_element(self, xPath, times = 0, action = None):
+		try:
+			WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, xPath)))
+		except TimeoutException:
+			# let's refresh and try again 
+			if times > 0:
+				self.driver.refresh()
+				self.wait()
+				if action is not None:
+					action()
 
+			# No luck
+			return False
+		# Return success
+		return True
+    
+  
 	def wait(self, factor = 1):
 		time.sleep(random.uniform(0.9 * factor, 2.8 * factor))
