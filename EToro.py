@@ -100,7 +100,7 @@ class EToro:
 				self.driver.find_element_by_xpath(xPath).send_keys(keys)
 			else:
 				self.driver.find_elements_by_xpath(xPath)[index].send_keys(keys)
-		except NoSuchElementException:
+		except (NoSuchElementException, IndexError):
 			pass
 		self.wait()
 
