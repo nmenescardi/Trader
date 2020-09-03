@@ -5,4 +5,4 @@ order_queues = Order_Queues()
 
 payload = sys.stdin.read()
 
-order_queues.add_ticker_to_open(payload.encode('utf-8'))
+order_queues.add_ticker_to_open(payload)
