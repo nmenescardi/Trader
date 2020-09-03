@@ -1,6 +1,7 @@
 from selenium import webdriver
 import os, redis
 from dotenv import load_dotenv
+from distutils.util import strtobool
 from Position import Position
 from Credentials import Credentials
 from EToro import EToro
@@ -9,10 +10,11 @@ from EToro import EToro
 load_dotenv()
 
 CHROME_DRIVER_PATH = os.getenv("CHROME_DRIVER_PATH")
-IS_PRODUCTION_MODE_SET = os.getenv("IS_PRODUCTION_MODE_SET")
-SHOULD_PERFORM_TRADE = os.getenv("SHOULD_PERFORM_TRADE")
+IS_PRODUCTION_MODE_SET = bool(strtobool(os.getenv("IS_PRODUCTION_MODE_SET")))
+SHOULD_PERFORM_TRADE = bool(strtobool(os.getenv("SHOULD_PERFORM_TRADE")))
+IS_VIRTUAL_PORTFOLIO = bool(strtobool(os.getenv("IS_VIRTUAL_PORTFOLIO")))
 
-if IS_PRODUCTION_MODE_SET == 'true':
+if IS_PRODUCTION_MODE_SET:
   username = os.getenv("PRODUCTION_USERNAME")
   password = os.getenv("PRODUCTION_PASSWORD")
 else:
@@ -40,13 +42,12 @@ eToro = EToro(driver, credentials)
 
 eToro.log_in()
 
-isRealPortfolio = False #TODO: from env file
-if not isRealPortfolio:
+if IS_VIRTUAL_PORTFOLIO:
   eToro.select_virtual_portfolio()
 
 while True:
   ticker = redisClient.spop(tickersSet)
-  if ticker is not None and SHOULD_PERFORM_TRADE != 'false':
+  if ticker is not None and SHOULD_PERFORM_TRADE:
     
     position = Position(ticker = ticker.decode('utf-8'), 
                         amount = 50, 
