@@ -32,60 +32,64 @@ class EToro:
 		# Go to stock url
 		self.driver.get("https://www.etoro.com/markets/" + position.ticker)
 		
-  	# Perform trade
+ 		# Perform trade
 		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
 		self.wait()
 		head = self.driver.find_element_by_xpath("//div[@class='user-market-head']")
 		self.click("//div[@automation-id='trade-button']", head)
-  
-		try:
-			self.click("//div[@data-etoro-automation-id='minus-button']")
-			self.click("//div[@data-etoro-automation-id='plus-button']")
-		except NoSuchElementException:
-			pass
 
+		#TODO: handle TimeoutException with a refresh? or just do nothing. When the trade
+		# cannot be opened.
 		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
 		self.wait()
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 0)
 		self.send_keys("//input[@data-etoro-automation-id='input']", str(position.amount) + Keys.ENTER, 0)
 		self.click("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']")
 	
-		try:
-			self.click("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']")
-		except NoSuchElementException:
-			pass
+		self.click("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']")
+
 
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 1)
 		self.send_keys("//input[@data-etoro-automation-id='input']", str(position.stopLoss) + Keys.ENTER, 1)
+
 		self.click("//div[@data-etoro-automation-id='execution-leverage-tab-title-value']")
 		self.click("//div[@data-etoro-automation-id='execution-take-profit-tab-title-value']")
-		
-		try:
-			self.click("//a[@data-etoro-automation-id='execution-take-profit-rate-editing-switch-to-amount-button']")
-		except NoSuchElementException:
-			pass
- 
+
+		self.click("//a[@data-etoro-automation-id='execution-take-profit-rate-editing-switch-to-amount-button']")
+
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 1)
 		self.send_keys("//input[@data-etoro-automation-id='input']", str(position.takeProfit) + Keys.ENTER, 1)
-  
+
 		try:
-			self.click("//button[@data-etoro-automation-id='execution-open-entry-order-button']")
+			self.click(
+				xPath = "//button[@data-etoro-automation-id='execution-open-entry-order-button']",
+				should_raise_exception = True
+			)
 		except NoSuchElementException:
 			self.click("//button[@data-etoro-automation-id='execution-open-position-button']")
 
 
-	def click(self, xPath, container = None):
-		if container is None:
-			self.driver.find_element_by_xpath(xPath).click()
-		else:
-			container.find_element_by_xpath(xPath).click()
+	def click(self, xPath, container = None, should_raise_exception = False):
+		try:
+			if container is None:
+				self.driver.find_element_by_xpath(xPath).click()
+			else:
+				container.find_element_by_xpath(xPath).click()
+		except NoSuchElementException:
+			if should_raise_exception:
+				raise NoSuchElementException
+		
 		self.wait()
  
+ 
 	def send_keys(self, xPath, keys, index = None):
-		if not index:
-			self.driver.find_element_by_xpath(xPath).send_keys(keys)
-		else:
-			self.driver.find_elements_by_xpath(xPath)[index].send_keys(keys)
+		try:
+			if not index:
+				self.driver.find_element_by_xpath(xPath).send_keys(keys)
+			else:
+				self.driver.find_elements_by_xpath(xPath)[index].send_keys(keys)
+		except NoSuchElementException:
+			pass
 		self.wait()
 
 
@@ -110,4 +114,4 @@ class EToro:
 		
 
 	def wait(self, factor = 1):
-		time.sleep(random.uniform(0.9 * factor, 2.8  * factor))
+		time.sleep(random.uniform(0.9 * factor, 2.8 * factor))
