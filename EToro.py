@@ -35,12 +35,11 @@ class EToro:
  		# Perform trade
 		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
 		self.wait()
-		head = self.driver.find_element_by_xpath("//div[@class='user-market-head']")
-		self.click("//div[@automation-id='trade-button']", head)
 
-		#TODO: handle TimeoutException with a refresh? or just do nothing. When the trade
-		# cannot be opened.
+		
+		self.click("//div[@automation-id='trade-button']")
 		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
+  
 		self.wait()
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 0)
 		self.send_keys("//input[@data-etoro-automation-id='input']", str(position.amount) + Keys.ENTER, 0)
