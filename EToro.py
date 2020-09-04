@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class EToro:
 
@@ -36,9 +36,7 @@ class EToro:
 		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//div[@automation-id='trade-button']")))
 		self.wait()
 
-		
-		self.click("//div[@automation-id='trade-button']")
-		WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
+		self.click_trade_button(times = 4)
   
 		self.wait()
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 0)
@@ -46,7 +44,6 @@ class EToro:
 		self.click("//div[@data-etoro-automation-id='execution-stop-loss-tab-title-value']")
 	
 		self.click("//a[@data-etoro-automation-id='execution-stop-loss-rate-editing-switch-to-amount-button']")
-
 
 		self.send_keys("//input[@data-etoro-automation-id='input']", self.backspace(), 1)
 		self.send_keys("//input[@data-etoro-automation-id='input']", str(position.stopLoss) + Keys.ENTER, 1)
@@ -79,6 +76,16 @@ class EToro:
 				raise NoSuchElementException
 		
 		self.wait()
+  
+  
+	def click_trade_button(self, times = 3):
+		try:
+			self.click("//div[@automation-id='trade-button']")
+			WebDriverWait(self.driver, 8).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
+		except (NoSuchElementException, TimeoutException):
+			if times > 0:
+				self.wait()
+				self.click_trade_button(times - 1)
  
  
 	def send_keys(self, xPath, keys, index = None):
