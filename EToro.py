@@ -49,7 +49,7 @@ class EToro:
 		return "//div[contains(@class,'header-text')]"
 
 
-	def check_proper_portfolio_is_selected(self): #TODO: call this function before open/close orders
+	def check_proper_portfolio_is_selected(self):
 		menu = self.get_menu_element()
 		portfolio_type_elem = menu.find_element_by_xpath(self.get_portfolio_type_path())
 		portfolio_type = str(portfolio_type_elem.text).lower()
