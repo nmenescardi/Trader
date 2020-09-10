@@ -66,6 +66,10 @@ class EToro:
 			print('There is an open position for {} already'.format(position.ticker))
 			return # Open only one order per ticker at a time
 
+		if position.amount > self.get_available_balance():
+			print('insufficient funds')
+			return
+   
 		self.check_proper_portfolio_is_selected()
 
 		# Go to stock url
@@ -104,6 +108,14 @@ class EToro:
 			self.click("//button[@data-etoro-automation-id='execution-open-position-button']")
 
 		self.update_open_orders()
+
+
+	def get_available_balance(self):
+		balance_elem = self.driver.find_element_by_xpath('//span[@automation-id="account-balance-availible-unit-value"]')
+		balance_str = str(balance_elem.text).replace('$', '').replace(',', '')
+		balance_rounded_str = balance_str.split(".")[0] 
+		balance = int(balance_rounded_str)
+		return balance		
 
 
 	def click(self, xPath, container = None, should_raise_exception = False):
