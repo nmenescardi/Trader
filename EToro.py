@@ -30,6 +30,10 @@ class EToro:
 
 
 	def open_position(self, position):
+		if position.ticker in self.open_positions:
+			print('There is an open position for {} already'.format(position.ticker))
+			return # Open only one order per ticker at a time
+
 		# Go to stock url
 		self.driver.get("https://www.etoro.com/markets/" + position.ticker)
 		
@@ -64,6 +68,8 @@ class EToro:
 			)
 		except NoSuchElementException:
 			self.click("//button[@data-etoro-automation-id='execution-open-position-button']")
+
+		self.update_open_orders()
 
 
 	def click(self, xPath, container = None, should_raise_exception = False):
@@ -116,6 +122,7 @@ class EToro:
 		try:
 			self.click("//div[@data-etoro-automation-id='open-trades-table-body-cell-user-actions-close-button']")
 			self.click("//button[@data-etoro-automation-id='close-position-close-button']")
+			self.update_open_orders()
 		except NoSuchElementException:
 			pass
 
