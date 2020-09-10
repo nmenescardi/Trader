@@ -10,6 +10,7 @@ class EToro:
 	def __init__(self, driver, credentials):
 		self.driver = driver
 		self.credentials = credentials
+		self.open_positions = set()
 
 	def log_in(self):
 		self.driver.get("https://www.etoro.com/login")
@@ -117,8 +118,27 @@ class EToro:
 			self.click("//button[@data-etoro-automation-id='close-position-close-button']")
 		except NoSuchElementException:
 			pass
-		
+
+
+	def go_to_portfolio(self):
+		self.driver.get("https://www.etoro.com/portfolio/")
+		self.wait_for_element("//div[@data-etoro-automation-id='portfolio-overview']", 0)
+		self.wait()
+
+
+	def update_open_orders(self):
+		self.go_to_portfolio()
   
+		elements = self.driver.find_elements_by_xpath("//div[@data-etoro-automation-id='portfolio-overview-table-body-cell-market-name']")
+
+		self.open_positions.clear()
+
+		for element in elements:
+			ticker = str(element.text).lower()
+			self.open_positions.add(ticker)
+
+		print(self.open_positions)
+
 	def wait_for_element(self, xPath, times = 0, action = None):
 		try:
 			WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.XPATH, xPath)))

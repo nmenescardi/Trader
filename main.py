@@ -44,6 +44,8 @@ def open_session():
 		if IS_VIRTUAL_PORTFOLIO:
 			eToro.select_virtual_portfolio()
 
+		eToro.update_open_orders()
+
 		while True:
 			if SHOULD_PERFORM_TRADE:
 	   
