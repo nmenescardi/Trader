@@ -17,8 +17,7 @@ class EToro:
 	def init(self):
 		self.log_in()
 		
-		if self.is_virtual_portfolio:
-			self.select_virtual_portfolio()
+		self.check_proper_portfolio_is_selected()
    
 		self.update_open_orders()
 
@@ -31,17 +30,18 @@ class EToro:
 		self.click("//button[@automation-id='login-sts-btn-sign-in']")
 
 
-	def select_virtual_portfolio(self):
-		#TODO: refactor this function into switch portfolio to...
-		WebDriverWait(self.driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
+	def switch_portfolio_type(self):
+		portfolio_type = 'Virtual' if self.is_virtual_portfolio else 'Real'
+  
 		menu = self.get_menu_element()
 		self.click(self.get_portfolio_type_path(), menu)
-		self.click("//span[contains(text(),'Virtual Portfolio')]", menu)
+		self.click("//span[contains(text(),'{} Portfolio')]".format(portfolio_type), menu)
 		dial = self.driver.find_element_by_xpath("//div[@class='cdk-overlay-container']")
-		self.click("//a[contains(text(),'Go to Virtual Portfolio')]", dial)
+		self.click("//a[contains(text(),'Go to {} Portfolio')]".format(portfolio_type), dial)
 
 
 	def get_menu_element(self):
+		WebDriverWait(self.driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
 		return self.driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
 
 
@@ -52,20 +52,21 @@ class EToro:
 	def check_proper_portfolio_is_selected(self): #TODO: call this function before open/close orders
 		menu = self.get_menu_element()
 		portfolio_type_elem = menu.find_element_by_xpath(self.get_portfolio_type_path())
-		portfolio_type = portfolio_type_elem.text().lower() #TODO: get text
+		portfolio_type = str(portfolio_type_elem.text).lower()
   
-		if self.is_virtual_portfolio and portfolio_type.contains('real'): 
-			#TODO: switch to Real
-			pass
-		elif not self.is_virtual_portfolio and portfolio_type.contains('virtual'):
-			#TODO: sitch to Virtual
-			pass
+		if (
+      		(self.is_virtual_portfolio and ('real' in portfolio_type))
+			or (not self.is_virtual_portfolio and ('virtual' in portfolio_type))
+    	): 
+			self.switch_portfolio_type()
 
 
 	def open_position(self, position):
 		if position.ticker in self.open_positions:
 			print('There is an open position for {} already'.format(position.ticker))
 			return # Open only one order per ticker at a time
+
+		self.check_proper_portfolio_is_selected()
 
 		# Go to stock url
 		self.driver.get("https://www.etoro.com/markets/" + position.ticker)
@@ -145,6 +146,8 @@ class EToro:
 
 
 	def close_position(self, ticker):
+		self.check_proper_portfolio_is_selected()
+
 		target_url = "https://www.etoro.com/portfolio/" + ticker
 		self.driver.get(target_url)
 		self.wait(factor = 2.5)
