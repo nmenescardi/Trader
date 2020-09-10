@@ -23,9 +23,9 @@ class EToro:
 	def select_virtual_portfolio(self):
 		WebDriverWait(self.driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
 		menu = self.driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
-		self.click("//div[contains(text(),' Real ')]", menu)
+		self.click("//div[contains(@class,'header-text')]", menu)
 		self.click("//span[contains(text(),'Virtual Portfolio')]", menu)
-		dial = self.driver.find_element_by_xpath("//div[@class='cdk-overlay-pane']")
+		dial = self.driver.find_element_by_xpath("//div[@class='cdk-overlay-container']")
 		self.click("//a[contains(text(),'Go to Virtual Portfolio')]", dial)
 
 
@@ -78,7 +78,8 @@ class EToro:
 				self.driver.find_element_by_xpath(xPath).click()
 			else:
 				container.find_element_by_xpath(xPath).click()
-		except NoSuchElementException:
+		except NoSuchElementException as e:
+			print('Exception {}'.format(e))
 			if should_raise_exception:
 				raise NoSuchElementException
 		
@@ -145,6 +146,7 @@ class EToro:
 			self.open_positions.add(ticker)
 
 		print(self.open_positions)
+
 
 	def wait_for_element(self, xPath, times = 0, action = None):
 		try:

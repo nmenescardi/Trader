@@ -61,7 +61,8 @@ def open_session():
 										takeProfit = 0.5,
 										isBuyingPosition = True)
 					eToro.open_position(position)
-	except Exception:
+	except Exception as e:
+		print('Exception {}'.format(e))
 		driver.quit()
   
 while True:
