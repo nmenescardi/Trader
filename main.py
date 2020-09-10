@@ -38,13 +38,8 @@ def open_session():
 	driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
 
 	try:
-		eToro = EToro(driver, credentials)
-		eToro.log_in()
-
-		if IS_VIRTUAL_PORTFOLIO:
-			eToro.select_virtual_portfolio()
-
-		eToro.update_open_orders()
+		eToro = EToro(driver, credentials, IS_VIRTUAL_PORTFOLIO)
+		eToro.init()
 
 		while True:
 			if SHOULD_PERFORM_TRADE:

@@ -7,10 +7,21 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class EToro:
 
-	def __init__(self, driver, credentials):
+	def __init__(self, driver, credentials, is_virtual_portfolio = True):
 		self.driver = driver
 		self.credentials = credentials
+		self.is_virtual_portfolio = is_virtual_portfolio
 		self.open_positions = set()
+
+	
+	def init(self):
+		self.log_in()
+		
+		if self.is_virtual_portfolio:
+			self.select_virtual_portfolio()
+   
+		self.update_open_orders()
+
 
 	def log_in(self):
 		self.driver.get("https://www.etoro.com/login")
@@ -21,12 +32,34 @@ class EToro:
 
 
 	def select_virtual_portfolio(self):
+		#TODO: refactor this function into switch portfolio to...
 		WebDriverWait(self.driver, 20).until(ec.visibility_of_element_located((By.XPATH, "//div[@automation-id='menu-layout']")))
-		menu = self.driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
-		self.click("//div[contains(@class,'header-text')]", menu)
+		menu = self.get_menu_element()
+		self.click(self.get_portfolio_type_path(), menu)
 		self.click("//span[contains(text(),'Virtual Portfolio')]", menu)
 		dial = self.driver.find_element_by_xpath("//div[@class='cdk-overlay-container']")
 		self.click("//a[contains(text(),'Go to Virtual Portfolio')]", dial)
+
+
+	def get_menu_element(self):
+		return self.driver.find_element_by_xpath("//div[@automation-id='menu-layout']")
+
+
+	def get_portfolio_type_path(self):
+		return "//div[contains(@class,'header-text')]"
+
+
+	def check_proper_portfolio_is_selected(self): #TODO: call this function before open/close orders
+		menu = self.get_menu_element()
+		portfolio_type_elem = menu.find_element_by_xpath(self.get_portfolio_type_path())
+		portfolio_type = portfolio_type_elem.text().lower() #TODO: get text
+  
+		if self.is_virtual_portfolio and portfolio_type.contains('real'): 
+			#TODO: switch to Real
+			pass
+		elif not self.is_virtual_portfolio and portfolio_type.contains('virtual'):
+			#TODO: sitch to Virtual
+			pass
 
 
 	def open_position(self, position):
