@@ -50,7 +50,7 @@ def open_session():
 
 				ticker_to_open = order_queues.get_ticker_to_open()
 				if ticker_to_open is not None:
-					position = Position(ticker = ticker_to_open,
+					position = Position(ticker = ticker_to_open.lower(),
 										amount = 100,
 										stopLoss = -2,
 										takeProfit = 0.5,
