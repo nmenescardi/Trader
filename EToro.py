@@ -145,7 +145,7 @@ class EToro:
 			self.click("//div[@automation-id='trade-button']")
 			WebDriverWait(self.driver, 8).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
 		except (NoSuchElementException, TimeoutException):
-			self.logger.exception('0016 - Error trying to click on trade button. Times left: {}', times)
+			self.logger.exception('0016 - Error trying to click on trade button. Times left: {}'.format(str(times)))
 			if times > 0:
 				self.wait()
 				self.click_trade_button(times - 1)
@@ -232,4 +232,4 @@ class EToro:
     
   
 	def wait(self, factor = 1):
-		time.sleep(random.uniform(0.9 * factor, 2.8 * factor))
+		time.sleep(random.uniform(0.5 * factor, 1.2 * factor))
