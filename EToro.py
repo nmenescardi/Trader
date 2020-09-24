@@ -7,11 +7,12 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class EToro:
 
-	def __init__(self, driver, credentials, is_virtual_portfolio = True):
+	def __init__(self, driver, credentials, logger, is_virtual_portfolio = True):
 		self.driver = driver
 		self.credentials = credentials
 		self.is_virtual_portfolio = is_virtual_portfolio
 		self.open_positions = set()
+		self.logger = logger
 
 	
 	def init(self):
@@ -32,6 +33,7 @@ class EToro:
 
 	def switch_portfolio_type(self):
 		portfolio_type = 'Virtual' if self.is_virtual_portfolio else 'Real'
+		self.logger.info('0009 - Portfolio type to select: {}'.format(portfolio_type))
   
 		menu = self.get_menu_element()
 		self.click(self.get_portfolio_type_path(), menu)
@@ -63,11 +65,12 @@ class EToro:
 
 	def open_position(self, position):
 		if position.ticker in self.open_positions:
-			print('There is an open position for {} already'.format(position.ticker))
+			self.logger.info('0009 - There is an open position for {} already'.format(position.ticker))
 			return True # Open only one order per ticker at a time
 
 		if position.amount > self.get_available_balance():
-			print('insufficient funds')
+			print('')
+			self.logger.info('0010 - insufficient funds')
 			return False
    
 		self.check_proper_portfolio_is_selected()
@@ -104,6 +107,7 @@ class EToro:
 				xPath = "//button[@data-etoro-automation-id='execution-open-entry-order-button']",
 				should_raise_exception = True
 			)
+			self.logger.info('0011 - Open position for {} finished without exceptions'.format(position.ticker))
 		except NoSuchElementException:
 			self.click("//button[@data-etoro-automation-id='execution-open-position-button']")
 
@@ -114,6 +118,7 @@ class EToro:
 
 	def get_available_balance(self):
 		balance_elem = self.driver.find_element_by_xpath('//span[@automation-id="account-balance-availible-unit-value"]')
+		self.logger.info('0013 - Available balance: {}'.format(balance_elem.text))
 		balance_str = str(balance_elem.text).replace('$', '').replace(',', '')
 		balance_rounded_str = balance_str.split(".")[0] 
 		balance = int(balance_rounded_str)
@@ -127,8 +132,9 @@ class EToro:
 			else:
 				container.find_element_by_xpath(xPath).click()
 		except NoSuchElementException as e:
-			print('Exception {}'.format(e))
+			self.logger.exception('0014 - Error trying to click on element with xPath: {}'.format(xPath))
 			if should_raise_exception:
+				self.logger.info('0015 - Raising exception after trying to click on element with xPath: {}'.format(xPath))
 				raise NoSuchElementException
 		
 		self.wait()
@@ -139,6 +145,7 @@ class EToro:
 			self.click("//div[@automation-id='trade-button']")
 			WebDriverWait(self.driver, 8).until(ec.presence_of_element_located((By.XPATH, "//input[@data-etoro-automation-id='input']")))
 		except (NoSuchElementException, TimeoutException):
+			self.logger.exception('0016 - Error trying to click on trade button. Times left: {}', times)
 			if times > 0:
 				self.wait()
 				self.click_trade_button(times - 1)
@@ -151,7 +158,7 @@ class EToro:
 			else:
 				self.driver.find_elements_by_xpath(xPath)[index].send_keys(keys)
 		except (NoSuchElementException, IndexError):
-			pass
+			self.logger.exception('0017 - Error trying to send keys for element with xPath: {}'.format(xPath))
 		self.wait()
 
 
@@ -167,16 +174,19 @@ class EToro:
 		self.wait(factor = 2.5)
 		
 		if self.driver.current_url != target_url:
-			print("There is no open position for {}.".format(ticker))
+			self.logger.info('0018 - There is no open position for {}.'.format(ticker))
 			return
  
 		try:
 			self.click("//div[@data-etoro-automation-id='open-trades-table-body-cell-user-actions-close-button']")
 			self.click("//button[@data-etoro-automation-id='close-position-close-button']")
+
+			self.logger.info('0019 - Position close for {} without exceptions.'.format(ticker))
 			self.update_open_orders()
-   
 			return not self.is_ticker_open(ticker)
+
 		except NoSuchElementException:
+			self.logger.exception('0020 - Error trying to close position for: {}'.format(ticker))
 			return False
 
 
@@ -201,7 +211,7 @@ class EToro:
 			ticker = str(element.text).lower()
 			self.open_positions.add(ticker)
 
-		print(self.open_positions)
+		self.logger.info('0012 - Positions opened: {}'.format(', '.join(str(e) for e in self.open_positions)))
 
 
 	def wait_for_element(self, xPath, times = 0, action = None):

@@ -42,7 +42,7 @@ def open_session():
 	driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
 
 	try:
-		eToro = EToro(driver, credentials, IS_VIRTUAL_PORTFOLIO)
+		eToro = EToro(driver, credentials, logger, IS_VIRTUAL_PORTFOLIO)
 		eToro.init()
 
 		while True:
