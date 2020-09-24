@@ -64,11 +64,11 @@ class EToro:
 	def open_position(self, position):
 		if position.ticker in self.open_positions:
 			print('There is an open position for {} already'.format(position.ticker))
-			return # Open only one order per ticker at a time
+			return True # Open only one order per ticker at a time
 
 		if position.amount > self.get_available_balance():
 			print('insufficient funds')
-			return
+			return False
    
 		self.check_proper_portfolio_is_selected()
 
@@ -108,6 +108,8 @@ class EToro:
 			self.click("//button[@data-etoro-automation-id='execution-open-position-button']")
 
 		self.update_open_orders()
+   
+		return self.is_ticker_open(position.ticker)
 
 
 	def get_available_balance(self):
@@ -172,9 +174,15 @@ class EToro:
 			self.click("//div[@data-etoro-automation-id='open-trades-table-body-cell-user-actions-close-button']")
 			self.click("//button[@data-etoro-automation-id='close-position-close-button']")
 			self.update_open_orders()
+   
+			return not self.is_ticker_open(ticker)
 		except NoSuchElementException:
-			pass
+			return False
 
+
+	def is_ticker_open(self, ticker):
+		return ticker in self.open_positions
+		
 
 	def go_to_portfolio(self):
 		self.driver.get("https://www.etoro.com/portfolio/")

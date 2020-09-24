@@ -43,19 +43,26 @@ def open_session():
 
 		while True:
 			if SHOULD_PERFORM_TRADE:
-	   
+
 				ticker_to_close = order_queues.get_ticker_to_close()
 				if ticker_to_close is not None:
-					eToro.close_position(ticker_to_close)
+					print('Ticker to Close: {}'.format(ticker_to_close))
+					is_close = eToro.close_position(ticker_to_close)
+					if is_close:
+						order_queues.remove_ticker_from_close()
 
 				ticker_to_open = order_queues.get_ticker_to_open()
 				if ticker_to_open is not None:
+					print('Ticker to Open: {}'.format(ticker_to_open))
 					position = Position(ticker = ticker_to_open.lower(),
 										amount = 100,
-										stopLoss = -2,
-										takeProfit = 0.5,
+										stopLoss = -10,
+										takeProfit = 10,
 										isBuyingPosition = True)
-					eToro.open_position(position)
+					is_open = eToro.open_position(position)
+					if is_open:
+						order_queues.remove_ticker_from_open()
+      
 	except Exception as e:
 		print('Exception {}'.format(e))
 		driver.quit()
