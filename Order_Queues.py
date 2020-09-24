@@ -31,6 +31,8 @@ class Order_Queues:
 	def maybe_decode_utf8(self, payload):
 		try:
 			str = payload.decode('utf-8')
+			str = str.strip()
+			str = str.lower()
 		except (UnicodeDecodeError, AttributeError):
 			str = None
 		return str
