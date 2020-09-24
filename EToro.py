@@ -175,7 +175,7 @@ class EToro:
 		
 		if self.driver.current_url != target_url:
 			self.logger.info('0018 - There is no open position for {}.'.format(ticker))
-			return
+			return True #TODO: returning True to avoid infinite loops. Send notification when it happens
  
 		try:
 			self.click("//div[@data-etoro-automation-id='open-trades-table-body-cell-user-actions-close-button']")
