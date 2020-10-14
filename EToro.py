@@ -69,7 +69,6 @@ class EToro:
 			return True # Open only one order per ticker at a time
 
 		if position.amount > self.get_available_balance():
-			print('')
 			self.logger.info('0010 - insufficient funds')
 			return False
    
