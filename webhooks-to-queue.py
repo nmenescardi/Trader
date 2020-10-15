@@ -1,5 +1,5 @@
 import sys
-from Order_Queues import Order_Queues
+from Order_Queues.Order_Queues import Order_Queues
 
 order_queues = Order_Queues()
 
