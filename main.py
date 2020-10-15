@@ -5,7 +5,7 @@ from distutils.util import strtobool
 from Position import Position
 from Credentials import Credentials
 from EToro import EToro
-from Order_Queues import Order_Queues
+from Order_Queues.Order_Queues import Order_Queues
 from Logger import Logger
 
 # Load Env variables:
