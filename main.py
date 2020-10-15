@@ -2,8 +2,8 @@ from selenium import webdriver
 import os
 from dotenv import load_dotenv
 from distutils.util import strtobool
-from Position import Position
-from Credentials import Credentials
+from Models.Position import Position
+from Models.Credentials import Credentials
 from EToro import EToro
 from Order_Queues.Order_Queues import Order_Queues
 from Logger import Logger
