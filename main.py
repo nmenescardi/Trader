@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from distutils.util import strtobool
 from Models.Position import Position
 from Models.Credentials import Credentials
-from EToro import EToro
+from Brokers.EToro import EToro
 from Order_Queues.Order_Queues import Order_Queues
 from Logger import Logger
 
