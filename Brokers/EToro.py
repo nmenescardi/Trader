@@ -65,7 +65,10 @@ class EToro:
 
 
 	def open_position(self, position):
-		if position.ticker in self.open_positions:
+		if(
+    		position.ticker in self.open_positions
+    		or position.ticker in self.open_orders
+    	):
 			self.logger.info('0009 - There is an open position for {} already'.format(position.ticker))
 			return True # Open only one order per ticker at a time
 
