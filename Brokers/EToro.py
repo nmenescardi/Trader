@@ -12,6 +12,7 @@ class EToro:
 		self.credentials = credentials
 		self.is_virtual_portfolio = is_virtual_portfolio
 		self.open_positions = set()
+		self.open_orders = set()
 		self.logger = logger
 
 	
@@ -211,6 +212,24 @@ class EToro:
 			self.open_positions.add(ticker)
 
 		self.logger.info('0012 - Positions opened: {}'.format(', '.join(str(e) for e in self.open_positions)))
+
+		self.__update_open_orders()
+
+
+	def __update_open_orders(self):
+		self.driver.get("https://www.etoro.com/portfolio/orders/")
+		self.wait_for_element("//div[@data-etoro-automation-id='orders-table']", 0)
+		self.wait()
+  
+		elements = self.driver.find_elements_by_xpath("//span[@data-etoro-automation-id='orders-table-body-cell-action-market-name']")
+
+		self.open_orders.clear()
+
+		for element in elements:
+			ticker = str(element.text).lower()
+			self.open_orders.add(ticker)
+
+		self.logger.info('0022 - Orders opened: {}'.format(', '.join(str(e) for e in self.open_orders)))
 
 
 	def wait_for_element(self, xPath, times = 0, action = None):
