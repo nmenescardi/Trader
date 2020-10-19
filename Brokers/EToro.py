@@ -20,7 +20,7 @@ class EToro:
 		
 		self.check_proper_portfolio_is_selected()
    
-		self.update_open_orders()
+		self.update_open_positions()
 
 
 	def log_in(self):
@@ -33,7 +33,7 @@ class EToro:
 
 	def switch_portfolio_type(self):
 		portfolio_type = 'Virtual' if self.is_virtual_portfolio else 'Real'
-		self.logger.info('0009 - Portfolio type to select: {}'.format(portfolio_type))
+		self.logger.info('0021 - Portfolio type to select: {}'.format(portfolio_type))
   
 		menu = self.get_menu_element()
 		self.click(self.get_portfolio_type_path(), menu)
@@ -110,7 +110,7 @@ class EToro:
 		except NoSuchElementException:
 			self.click("//button[@data-etoro-automation-id='execution-open-position-button']")
 
-		self.update_open_orders()
+		self.update_open_positions()
    
 		return self.is_ticker_open(position.ticker)
 
@@ -181,7 +181,7 @@ class EToro:
 			self.click("//button[@data-etoro-automation-id='close-position-close-button']")
 
 			self.logger.info('0019 - Position close for {} without exceptions.'.format(ticker))
-			self.update_open_orders()
+			self.update_open_positions()
 			return not self.is_ticker_open(ticker)
 
 		except NoSuchElementException:
@@ -199,7 +199,7 @@ class EToro:
 		self.wait()
 
 
-	def update_open_orders(self):
+	def update_open_positions(self):
 		self.go_to_portfolio()
   
 		elements = self.driver.find_elements_by_xpath("//div[@data-etoro-automation-id='portfolio-overview-table-body-cell-market-name']")
