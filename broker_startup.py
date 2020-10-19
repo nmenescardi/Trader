@@ -64,7 +64,7 @@ def open_session():
 					position = Position(ticker = ticker_to_open.lower(),
 										amount = 100,
 										stopLoss = -10,
-										takeProfit = 10,
+										takeProfit = 1,
 										isBuyingPosition = True)
 					is_open = eToro.open_position(position)
 					if is_open:
