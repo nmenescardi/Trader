@@ -16,7 +16,7 @@ class Order_Queues:
 
 	def get_ticker_to_open(self):
 		ticker = self.redisClient.lindex(self.orders_to_open_queue, 0)
-		return self.maybe_decode_utf8(ticker)
+		return self.__maybe_decode_utf8(ticker)
 
 	def add_ticker_to_open(self, ticker):
 		self.redisClient.lpush(self.orders_to_open_queue, ticker.encode('utf-8'))
@@ -24,18 +24,31 @@ class Order_Queues:
 	def remove_ticker_from_open(self):
 		self.redisClient.lpop(self.orders_to_open_queue)
 
+	def print_open_queue(self):
+		self.__print_queue(self.orders_to_open_queue)
+
+	def empty_open_queue(self):
+		self.__empty_queue(self.orders_to_open_queue)
+
 
 	def add_ticker_to_close(self, ticker):
 		self.redisClient.lpush(self.orders_to_close_queue, ticker.encode('utf-8'))
 
 	def get_ticker_to_close(self):
 		ticker = self.redisClient.lindex(self.orders_to_close_queue, 0)
-		return self.maybe_decode_utf8(ticker)
+		return self.__maybe_decode_utf8(ticker)
 
 	def remove_ticker_from_close(self):
 		self.redisClient.lpop(self.orders_to_close_queue)
-  
-	def maybe_decode_utf8(self, payload):
+
+	def print_close_queue(self):
+		self.__print_queue(self.orders_to_close_queue)
+
+	def empty_close_queue(self):
+		self.__empty_queue(self.orders_to_close_queue)
+
+
+	def __maybe_decode_utf8(self, payload):
 		try:
 			str = payload.decode('utf-8')
 			str = str.strip()
@@ -43,3 +56,13 @@ class Order_Queues:
 		except (UnicodeDecodeError, AttributeError):
 			str = None
 		return str
+
+
+	def __print_queue(self, queue):
+		for i in range(0, self.redisClient.llen(queue)):
+			print(self.redisClient.lindex(queue, i))
+
+
+	def __empty_queue(self, queue):
+		while(self.redisClient.llen(queue)!=0):
+			print(self.redisClient.lpop(queue))
