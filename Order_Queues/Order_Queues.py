@@ -1,4 +1,4 @@
-import os, redis
+import os, redis, pickle
 from dotenv import load_dotenv
 
 class Order_Queues:
@@ -14,14 +14,14 @@ class Order_Queues:
 		self.orders_to_open_queue = os.getenv("REDIS_OPEN_QUEUE_KEY")
 		self.orders_to_close_queue = os.getenv("REDIS_CLOSE_QUEUE_KEY")
 
-	def get_ticker_to_open(self):
-		ticker = self.redisClient.lindex(self.orders_to_open_queue, 0)
-		return self.__maybe_decode_utf8(ticker)
+	def get_position_to_open(self):
+		position = self.redisClient.lindex(self.orders_to_open_queue, 0)
+		return pickle.loads(position)
 
-	def add_ticker_to_open(self, ticker):
-		self.redisClient.lpush(self.orders_to_open_queue, ticker.encode('utf-8'))
+	def add_position_to_open(self, position):
+		self.redisClient.lpush(self.orders_to_open_queue, pickle.dumps(position))
 
-	def remove_ticker_from_open(self):
+	def remove_position_from_open(self):
 		self.redisClient.lpop(self.orders_to_open_queue)
 
 	def print_open_queue(self):

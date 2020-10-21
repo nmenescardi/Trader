@@ -6,3 +6,7 @@ class Position:
 		self.stopLoss = stopLoss
 		self.takeProfit = takeProfit
 		self.isBuyingPosition = isBuyingPosition
+
+
+	def print_params(self):
+		print(vars(self))
