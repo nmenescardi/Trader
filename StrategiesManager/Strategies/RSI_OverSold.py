@@ -1,6 +1,6 @@
 from stockstats import StockDataFrame
 
-class Strategy:
+class RSI_OverSold:
 
 	def __init__(self, queuesHandler, dataProvider):
 		self.queuesHandler = queuesHandler
