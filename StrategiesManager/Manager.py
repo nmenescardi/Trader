@@ -17,6 +17,6 @@ class Manager:
 		while(True):
 			for ticker in self.tickerList:
 				self.strategy.perform(ticker)
-				time.sleep(5)
+				time.sleep(1)
 
 			#time.sleep(60 * self.minutesToWait)
