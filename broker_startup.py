@@ -59,20 +59,16 @@ def open_session():
 					else:
 						logger.info('0003 - Error trying to close position for: {}'.format(ticker_to_close))
 
-				ticker_to_open = order_queues.get_ticker_to_open()
-				if ticker_to_open is not None:
-					logger.info('0004 - Ticker to Open: {}'.format(ticker_to_open))
-					position = Position(ticker = ticker_to_open.lower(),
-										amount = 100,
-										stopLoss = -10,
-										takeProfit = 1,
-										isBuyingPosition = True)
+				position = order_queues.get_position_to_open()
+				if position is not None:
+					logger.info('0004 - Ticker to Open: {}'.format(position))
+     
 					is_open = eToro.open_position(position)
 					if is_open:
-						order_queues.remove_ticker_from_open()
-						logger.info('0005 - {} was successfully opened'.format(ticker_to_open))
+						order_queues.remove_position_from_open()
+						logger.info('0005 - {} was successfully opened'.format(position.ticker))
 					else:
-						logger.info('0006 - Error trying to open a position for: {}'.format(ticker_to_open))
+						logger.info('0006 - Error trying to open a position for: {}'.format(position.ticker))
 
 	except Exception as e:
 		logger.exception('0007 - Exception trying to open a position')

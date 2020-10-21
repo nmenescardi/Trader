@@ -116,10 +116,7 @@ class EToro:
 		# 1 - Check if the broker has been set as single position mode
 		if(
 			self.is_single_position_mode 
-			and (
-       			position.ticker in self.open_positions
-				or position.ticker in self.open_orders
-			)
+			and self.is_ticker_open(position.ticker)
 		):
 			self.logger.info('0009 - There is an open position for {} already'.format(position.ticker))
 			return True # Open only one order per ticker at a time
@@ -207,7 +204,11 @@ class EToro:
 
 
 	def is_ticker_open(self, ticker):
-		return ticker in self.open_positions
+		return (
+			ticker in self.open_positions
+			or ticker in self.open_orders
+		)
+
 		
 
 	def go_to_portfolio(self):

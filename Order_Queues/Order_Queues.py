@@ -16,7 +16,7 @@ class Order_Queues:
 
 	def get_position_to_open(self):
 		position = self.redisClient.lindex(self.orders_to_open_queue, 0)
-		return pickle.loads(position)
+		return self.__maybe_deserialize(position)
 
 	def add_position_to_open(self, position):
 		self.redisClient.lpush(self.orders_to_open_queue, pickle.dumps(position))
@@ -25,6 +25,7 @@ class Order_Queues:
 		self.redisClient.lpop(self.orders_to_open_queue)
 
 	def print_open_queue(self):
+		#TODO: print tickers instead of binary
 		self.__print_queue(self.orders_to_open_queue)
 
 	def empty_open_queue(self):
@@ -56,6 +57,14 @@ class Order_Queues:
 		except (UnicodeDecodeError, AttributeError):
 			str = None
 		return str
+
+
+	def __maybe_deserialize(self, payload):
+		try:
+			position = pickle.loads(payload)
+		except (TypeError, UnicodeDecodeError, AttributeError):
+			position = None
+		return position
 
 
 	def __print_queue(self, queue):

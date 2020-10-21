@@ -1,7 +1,7 @@
 class Position:
 
-	def __init__(self, ticker, amount=50, stopLoss=-2, takeProfit=0.5, isBuyingPosition=True):
-		self.ticker = ticker
+	def __init__(self, ticker, amount=100, stopLoss=-10, takeProfit=1, isBuyingPosition=True):
+		self.ticker = ticker.lower()
 		self.amount = amount
 		self.stopLoss = stopLoss
 		self.takeProfit = takeProfit
