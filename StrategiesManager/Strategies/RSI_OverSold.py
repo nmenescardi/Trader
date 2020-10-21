@@ -9,6 +9,7 @@ class RSI_OverSold:
 
 
 	def perform(self, ticker, rsi_period = 5, rsi_limit = 20, atr_tp_multiplier = 0.5):
+		#print(locals())
 
 		# 1 - Calculate Take Profit using daily ATR
 		data_daily = self.dataProvider.get(ticker, period="20d", interval="1d")
