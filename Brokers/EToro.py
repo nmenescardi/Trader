@@ -7,13 +7,14 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class EToro:
 
-	def __init__(self, driver, credentials, logger, is_virtual_portfolio = True):
+	def __init__(self, driver, credentials, logger, is_virtual_portfolio = True,  is_single_position_mode = True):
 		self.driver = driver
 		self.credentials = credentials
 		self.is_virtual_portfolio = is_virtual_portfolio
 		self.open_positions = set()
 		self.open_orders = set()
 		self.logger = logger
+		self.is_single_position_mode = is_single_position_mode
 
 	
 	def init(self):
@@ -65,16 +66,8 @@ class EToro:
 
 
 	def open_position(self, position):
-		if(
-    		position.ticker in self.open_positions
-    		or position.ticker in self.open_orders
-    	):
-			self.logger.info('0009 - There is an open position for {} already'.format(position.ticker))
-			return True # Open only one order per ticker at a time
-
-		if position.amount > self.get_available_balance():
-			self.logger.info('0010 - insufficient funds')
-			return False
+		if self.should_discard_position(position):
+			return True
    
 		self.check_proper_portfolio_is_selected()
 
@@ -117,6 +110,26 @@ class EToro:
 		self.update_open_positions()
    
 		return self.is_ticker_open(position.ticker)
+
+	
+	def should_discard_position(self, position):
+		# 1 - Check if the broker has been set as single position mode
+		if(
+			self.is_single_position_mode 
+			and (
+       			position.ticker in self.open_positions
+				or position.ticker in self.open_orders
+			)
+		):
+			self.logger.info('0009 - There is an open position for {} already'.format(position.ticker))
+			return True # Open only one order per ticker at a time
+
+		# 2 - Check if there is enough balance available
+		if position.amount > self.get_available_balance():
+			self.logger.info('0010 - insufficient funds')
+			return True
+
+		return False
 
 
 	def get_available_balance(self):

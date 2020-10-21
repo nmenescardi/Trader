@@ -15,6 +15,7 @@ CHROME_DRIVER_PATH = os.getenv("CHROME_DRIVER_PATH")
 IS_PRODUCTION_MODE_SET = bool(strtobool(os.getenv("IS_PRODUCTION_MODE_SET")))
 SHOULD_PERFORM_TRADE = bool(strtobool(os.getenv("SHOULD_PERFORM_TRADE")))
 IS_VIRTUAL_PORTFOLIO = bool(strtobool(os.getenv("IS_VIRTUAL_PORTFOLIO")))
+SHOULD_OPEN_SINGLE_POSITION = bool(strtobool(os.getenv("SHOULD_OPEN_SINGLE_POSITION")))
 
 if IS_PRODUCTION_MODE_SET:
 	username = os.getenv("PRODUCTION_USERNAME")
@@ -42,7 +43,7 @@ def open_session():
 	driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
 
 	try:
-		eToro = EToro(driver, credentials, logger, IS_VIRTUAL_PORTFOLIO)
+		eToro = EToro(driver, credentials, logger, IS_VIRTUAL_PORTFOLIO, SHOULD_OPEN_SINGLE_POSITION)
 		eToro.init()
 
 		while True:
