@@ -61,7 +61,7 @@ def open_session():
 
 				position = order_queues.get_position_to_open()
 				if position is not None:
-					logger.info('0004 - Ticker to Open: {}'.format(position))
+					logger.info('0004 - Ticker to Open: {}'.format(position.ticker))
      
 					is_open = eToro.open_position(position)
 					if is_open:
