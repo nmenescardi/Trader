@@ -22,7 +22,6 @@ class StrategiesSetup():
 			{'ticker': 'DAR', },
 			{'ticker': 'MTH', },
 			{'ticker': 'PENN', },
-			{'ticker': 'FIVN', },
 			{'ticker': 'DRI', },
 			{'ticker': 'HBI', },
 			{'ticker': 'Z', },

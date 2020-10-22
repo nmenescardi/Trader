@@ -47,7 +47,7 @@ class RSI_OverSold:
 			self.queuesHandler.add_position_to_open(Position(
 				ticker = ticker,
 				amount = amount,
-				stopLoss = -3, #TODO: False
+				stopLoss = False,
 				takeProfit = round(takeProfit, 2),
 			))
    
