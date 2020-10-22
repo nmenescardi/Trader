@@ -1,4 +1,5 @@
 from stockstats import StockDataFrame
+from Models.Position import Position
 
 class RSI_OverSold:
 
@@ -29,7 +30,7 @@ class RSI_OverSold:
 		rsi_key = 'rsi_' + str(rsi_period)
   
 		print(ticker)
-		#print(round(tp_percentage,2))
+		print(round(tp_percentage,2))
 
 		# 3 - Open a position if RSI value is crossing up the limit
 		is_crossing_up = self.__crossover(
@@ -38,8 +39,18 @@ class RSI_OverSold:
 			offset = 2
     	)
 
-		if is_crossing_up:
-			self.queuesHandler.add_ticker_to_open(ticker)
+		if is_crossing_up or True:
+			amount = 200
+			takeProfit = amount * tp_percentage / 100
+			print('take profit {}'.format(takeProfit))
+
+			self.queuesHandler.add_position_to_open(Position(
+				ticker = ticker,
+				amount = amount,
+				stopLoss = -3, #TODO: False
+				takeProfit = round(takeProfit, 2),
+			))
+   
 			print('Opening a position for {}'.format(ticker))
 
 
