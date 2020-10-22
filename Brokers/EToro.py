@@ -130,11 +130,16 @@ class EToro:
 
 
 	def get_available_balance(self):
-		balance_elem = self.driver.find_element_by_xpath('//span[@automation-id="account-balance-availible-unit-value"]')
-		self.logger.info('0013 - Available balance: {}'.format(balance_elem.text))
-		balance_str = str(balance_elem.text).replace('$', '').replace(',', '')
-		balance_rounded_str = balance_str.split(".")[0] 
-		balance = int(balance_rounded_str)
+		try:
+			balance_elem = self.driver.find_element_by_xpath("//span[@automation-id='account-balance-availible-unit-value']")
+			self.logger.info('0013 - Available balance: {}'.format(balance_elem.text))
+			balance_str = str(balance_elem.text).replace('$', '').replace(',', '')
+			balance_rounded_str = balance_str.split(".")[0] 
+			balance = int(balance_rounded_str)
+		except NoSuchElementException as e:
+			# If fails. At least try to open a position if it's possible
+			self.logger.info('0023 - Error trying to grab balance')
+			balance = 99999999
 		return balance		
 
 
@@ -204,6 +209,10 @@ class EToro:
 
 
 	def is_ticker_open(self, ticker):
+		# If not single position mode -> don't check if position was open
+		if not self.is_single_position_mode:
+			return True
+		
 		return (
 			ticker in self.open_positions
 			or ticker in self.open_orders
@@ -218,6 +227,10 @@ class EToro:
 
 
 	def update_open_positions(self):
+		# Update positions only for single position mode
+		if not self.is_single_position_mode:
+			return
+
 		self.go_to_portfolio()
   
 		elements = self.driver.find_elements_by_xpath("//div[@data-etoro-automation-id='portfolio-overview-table-body-cell-market-name']")
