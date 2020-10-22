@@ -22,7 +22,7 @@ class Order_Queues:
 		self.redisClient.rpush(self.orders_to_open_queue, pickle.dumps(position))
 
 	def remove_position_from_open(self):
-		self.redisClient.rpop(self.orders_to_open_queue)
+		self.redisClient.lpop(self.orders_to_open_queue)
 
 	def print_open_queue(self):
 		for i in range(0, self.redisClient.llen(self.orders_to_open_queue)):
@@ -41,7 +41,7 @@ class Order_Queues:
 		return self.__maybe_decode_utf8(ticker)
 
 	def remove_ticker_from_close(self):
-		self.redisClient.rpop(self.orders_to_close_queue)
+		self.redisClient.lpop(self.orders_to_close_queue)
 
 	def print_close_queue(self):
 		self.__print_queue(self.orders_to_close_queue)
