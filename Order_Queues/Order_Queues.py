@@ -19,28 +19,29 @@ class Order_Queues:
 		return self.__maybe_deserialize(position)
 
 	def add_position_to_open(self, position):
-		self.redisClient.lpush(self.orders_to_open_queue, pickle.dumps(position))
+		self.redisClient.rpush(self.orders_to_open_queue, pickle.dumps(position))
 
 	def remove_position_from_open(self):
-		self.redisClient.lpop(self.orders_to_open_queue)
+		self.redisClient.rpop(self.orders_to_open_queue)
 
 	def print_open_queue(self):
-		#TODO: print tickers instead of binary
-		self.__print_queue(self.orders_to_open_queue)
+		for i in range(0, self.redisClient.llen(self.orders_to_open_queue)):
+			position = self.__maybe_deserialize(self.redisClient.lindex(self.orders_to_open_queue, i))
+			print(position.ticker)
 
 	def empty_open_queue(self):
 		self.__empty_queue(self.orders_to_open_queue)
 
 
 	def add_ticker_to_close(self, ticker):
-		self.redisClient.lpush(self.orders_to_close_queue, ticker.encode('utf-8'))
+		self.redisClient.rpush(self.orders_to_close_queue, ticker.encode('utf-8'))
 
 	def get_ticker_to_close(self):
 		ticker = self.redisClient.lindex(self.orders_to_close_queue, 0)
 		return self.__maybe_decode_utf8(ticker)
 
 	def remove_ticker_from_close(self):
-		self.redisClient.lpop(self.orders_to_close_queue)
+		self.redisClient.rpop(self.orders_to_close_queue)
 
 	def print_close_queue(self):
 		self.__print_queue(self.orders_to_close_queue)
