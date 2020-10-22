@@ -39,7 +39,7 @@ class RSI_OverSold:
 			offset = 2
     	)
 
-		if is_crossing_up or True:
+		if is_crossing_up:
 			amount = 200
 			takeProfit = amount * tp_percentage / 100
 			print('take profit {}'.format(takeProfit))
