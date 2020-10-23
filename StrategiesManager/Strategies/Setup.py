@@ -1,9 +1,12 @@
 class StrategiesSetup():
+
+	RSI_OverSold = 'RSI_OverSold'
 	
 	config = {
-		'RSI_OverSold' : [
+		RSI_OverSold : [
 			{'ticker': 'GME', 'rsi_period' : 14},
-			{'ticker': 'NIO', },
+			{'ticker': 'NIO', 'ltf_interval' : "1m"},
+			{'ticker': 'NIO', 'ltf_interval' : "30m"},
 			{'ticker': 'ZM', },
 			{'ticker': 'BYD', },
 			{'ticker': 'PTON', },

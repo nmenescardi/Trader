@@ -1,23 +1,15 @@
 import time, pandas as pd
-from .yFinanceDataProvider import yFinanceDataProvider 
-from .Strategies.RSI_OverSold import RSI_OverSold
-from .StrategiesSetup import StrategiesSetup
-
+from .Strategies.Setup import StrategiesSetup
+from .Strategies.Factory import StrategiesFactory
 class Manager:
 
-	def __init__(self, queuesHandler):
-		self.strategy = RSI_OverSold(
-			queuesHandler = queuesHandler, 
-			dataProvider = yFinanceDataProvider()
-		)
-
-		# Get params for current strategy
-		strategy_name = type(self.strategy).__name__
-		self.strategy_params = StrategiesSetup.config.get(strategy_name)
-
+	def __init__(self):
+		self.strategies_factory = StrategiesFactory()
 
 	def run(self):
 		while(True):
-			for params in self.strategy_params:
-				self.strategy.perform(**params)
-				time.sleep(1)
+			for strategy_key, strategy_config in StrategiesSetup.config.items():
+				for params in strategy_config:
+					strategy = self.strategies_factory.make(strategy_key)
+					strategy.perform(**params)
+					time.sleep(1)

@@ -9,7 +9,15 @@ class RSI_OverSold:
 		self.__ignore_warnings()
 
 
-	def perform(self, ticker, rsi_period = 5, rsi_limit = 20, atr_tp_multiplier = 0.5):
+	def perform(
+    	self, 
+    	ticker, 
+    	rsi_period = 5, 
+    	rsi_limit = 20, 
+    	atr_tp_multiplier = 0.5, 
+    	ltf_interval="5m",
+    	ltf_period="2d"
+    ):
 		#print(locals())
 
 		# 1 - Calculate Take Profit using daily ATR
@@ -24,7 +32,7 @@ class RSI_OverSold:
 		
 
 		# 2 - Calculate RSI using Lower TimeFrame (ltf) data
-		data_ltf = self.dataProvider.get(ticker)
+		data_ltf = self.dataProvider.get(symbol = ticker, interval = ltf_interval, period = ltf_period)
 		df_ltf = StockDataFrame.retype(data_ltf)
 		
 		rsi_key = 'rsi_' + str(rsi_period)
@@ -58,8 +66,8 @@ class RSI_OverSold:
 		last_index = - offset
 		previous_index = last_index - 1
   
-		last_value = series[last_index]
-		previous_value = series[previous_index]
+		last_value = round(series[last_index], 2)
+		previous_value = round(series[previous_index], 2)
 
 		print("Last: {}, Previous: {}".format(last_value, previous_value))
 		
