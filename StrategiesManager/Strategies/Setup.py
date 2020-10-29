@@ -5,8 +5,9 @@ class StrategiesSetup():
 	config = {
 		RSI_OverSold : [
 			{'ticker': 'GME', 'rsi_period' : 14},
-			{'ticker': 'NIO', 'ltf_interval' : "1m"},
+			{'ticker': 'NIO', 'ltf_interval' : "5m", 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percent': 2},
 			{'ticker': 'NIO', 'ltf_interval' : "30m"},
+			{'ticker': 'AAPL', 'ltf_interval' : "5m", 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percent': 5},
 			{'ticker': 'ZM', },
 			{'ticker': 'BYD', },
 			{'ticker': 'PTON', },
@@ -80,7 +81,6 @@ class StrategiesSetup():
 			{'ticker': 'RUN', },
 			{'ticker': 'AMD', },
 			{'ticker': 'NXPI', },
-			{'ticker': 'AAPL', },
 			{'ticker': 'RH', },
 			{'ticker': 'TMO', },
 			{'ticker': 'DHR', },
