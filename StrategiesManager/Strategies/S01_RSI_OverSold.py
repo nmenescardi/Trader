@@ -27,9 +27,11 @@ class RSI_OverSold:
 		
 		rsi_key = 'rsi_' + str(rsi_period)
   
+		rsi_serie = df_ltf[rsi_key]
 		print(ticker)
+		print("Current RSI({}): {}.. Last RSI value: {}".format(rsi_period, rsi_serie[-1], rsi_serie[-2]))
 
-		if df_ltf[rsi_key][-2] < rsi_limit:
+		if rsi_serie[-2] < rsi_limit:
 			takeProfit = amount * tp_percentage / 100
 
 			self.queuesHandler.add_position_to_open(Position(
