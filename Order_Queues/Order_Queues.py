@@ -74,5 +74,4 @@ class Order_Queues:
 
 
 	def __empty_queue(self, queue):
-		while(self.redisClient.llen(queue)!=0):
-			print(self.redisClient.lpop(queue))
+		self.redisClient.delete(queue)
