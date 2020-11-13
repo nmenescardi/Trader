@@ -29,8 +29,10 @@ class RSI_OverSold:
   
 		rsi_serie = df_ltf[rsi_key]
 		print(ticker)
+		self.__print_df_tail(df_ltf)
 		print("Current RSI({}): {}.. Last RSI value: {}".format(rsi_period, rsi_serie[-1], rsi_serie[-2]))
 
+		#TODO: Should it use current?
 		if rsi_serie[-2] < rsi_limit:
 			takeProfit = amount * tp_percentage / 100
 
@@ -62,3 +64,10 @@ class RSI_OverSold:
 		import warnings, logging
 		warnings.filterwarnings("ignore")
 		logging.disable(logging.CRITICAL)
+
+
+	def __print_df_tail(self, df, rows=5):
+		import pandas, sys
+		pandas.set_option('display.max_columns', None)
+		print(df.tail(rows))
+		sys.stdout.flush()
