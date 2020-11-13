@@ -17,9 +17,16 @@ class RSI_OverSold:
     	tp_percentage = 0.5, 
     	amount = 200, 
     	ltf_interval="5m",
-    	ltf_period="2d"
+    	ltf_period="2d",
+    	days_between_orders="2",
     ):
 		#print(locals())
+
+		#TODO: Create StrategyStats class. To handle saved data related to strategy/ticker. Eg:
+			# StrategyStats.save_order_creation(ticker, strategy_name, locals()?? )
+			# StrategyStats.get_daily_sma(period=100)
+			# StrategyStats.get_daily_atr(period=14)
+			# StrategyStats.does_exist_recent_order(ticker, strategy_name, days_between_orders)
 		
 		# Calculate RSI using Lower TimeFrame (ltf) data
 		data_ltf = self.dataProvider.get(symbol = ticker, interval = ltf_interval, period = ltf_period)
@@ -28,12 +35,16 @@ class RSI_OverSold:
 		rsi_key = 'rsi_' + str(rsi_period)
   
 		rsi_serie = df_ltf[rsi_key]
+
+		current_rsi = round(rsi_serie[-1], 2)
+		previous_rsi = round(rsi_serie[-2], 2)
+
 		print(ticker)
-		self.__print_df_tail(df_ltf)
-		print("Current RSI({}): {}.. Last RSI value: {}".format(rsi_period, rsi_serie[-1], rsi_serie[-2]))
+		#self.__print_df_tail(df_ltf)
+		print("Current RSI({}): {}.. Previous RSI value: {}".format(rsi_period, current_rsi, previous_rsi))
 
 		#TODO: Should it use current?
-		if rsi_serie[-2] < rsi_limit:
+		if previous_rsi < rsi_limit:
 			takeProfit = amount * tp_percentage / 100
 
 			self.queuesHandler.add_position_to_open(Position(
