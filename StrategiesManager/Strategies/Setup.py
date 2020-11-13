@@ -59,7 +59,7 @@ class StrategiesSetup():
 			{'ticker': 'INSP', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 10 },	
 			{'ticker': 'IPHI', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 7 },	
 			{'ticker': 'IRTC', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 },	
-			{'ticker': 'JD', 'rsi_period' : 9, 'rsi_limit': 30, 'tp_percentage': 5 },	
+			#{'ticker': 'JD', 'rsi_period' : 9, 'rsi_limit': 30, 'tp_percentage': 5 }, #TODO: Map ticker -> URL
 			{'ticker': 'LAD', 'rsi_period' : 2, 'rsi_limit': 5, 'tp_percentage': 3 },	
 			{'ticker': 'LEN', 'rsi_period' : 2, 'rsi_limit': 5, 'tp_percentage': 2 },	
 			{'ticker': 'LOW', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 3 },	
