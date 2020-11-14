@@ -52,8 +52,6 @@ class RSI_OverSold:
    
 			print('Opening a position for {}. Take profit {}'.format(ticker, takeProfit))
 
-			self.order_queues.save_order(ticker)
-
 
 	def __crossover(self, series, limit, offset = 1):
 		last_index = - offset

@@ -66,6 +66,7 @@ def open_session():
 					is_open = eToro.open_position(position)
 					if is_open:
 						order_queues.remove_position_from_open()
+						self.order_queues.save_order(ticker)
 						logger.info('0005 - {} was successfully opened'.format(position.ticker))
 					else:
 						logger.info('0006 - Error trying to open a position for: {}'.format(position.ticker))
