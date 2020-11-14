@@ -18,15 +18,12 @@ class RSI_OverSold:
     	amount = 200, 
     	ltf_interval="5m",
     	ltf_period="2d",
-    	days_between_orders="2",
+    	days_between_orders=2,
     ):
 		#print(locals())
 
-		#TODO: Create StrategyStats class. To handle saved data related to strategy/ticker. Eg:
-			# StrategyStats.save_order_creation(ticker, strategy_name, locals()?? )
-			# StrategyStats.get_daily_sma(period=100)
-			# StrategyStats.get_daily_atr(period=14)
-			# StrategyStats.does_exist_recent_order(ticker, strategy_name, days_between_orders)
+		if self.order_queues.is_there_a_recent_order(ticker, days_between_orders):
+			return
 		
 		# Calculate RSI using Lower TimeFrame (ltf) data
 		data_ltf = self.dataProvider.get(symbol = ticker, interval = ltf_interval, period = ltf_period)
@@ -43,7 +40,6 @@ class RSI_OverSold:
 		#self.__print_df_tail(df_ltf)
 		print("Current RSI({}): {}.. Previous RSI value: {}".format(rsi_period, current_rsi, previous_rsi))
 
-		#TODO: Should it use current?
 		if previous_rsi < rsi_limit:
 			takeProfit = amount * tp_percentage / 100
 
@@ -55,6 +51,8 @@ class RSI_OverSold:
 			))
    
 			print('Opening a position for {}. Take profit {}'.format(ticker, takeProfit))
+
+			self.order_queues.save_order(ticker)
 
 
 	def __crossover(self, series, limit, offset = 1):
