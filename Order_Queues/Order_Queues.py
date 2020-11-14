@@ -13,6 +13,8 @@ class Order_Queues:
 		)
 		self.orders_to_open_queue = os.getenv("REDIS_OPEN_QUEUE_KEY")
 		self.orders_to_close_queue = os.getenv("REDIS_CLOSE_QUEUE_KEY")
+		self.last_orders_queue = os.getenv("REDIS_LAST_ORDERS_QUEUE_KEY")
+
 
 	def get_position_to_open(self):
 		position = self.redisClient.lindex(self.orders_to_open_queue, 0)
@@ -48,6 +50,39 @@ class Order_Queues:
 
 	def empty_close_queue(self):
 		self.__empty_queue(self.orders_to_close_queue)
+
+
+	def save_order(self, ticker, order_datetime = False):
+		from datetime import datetime
+		if not order_datetime:
+			order_datetime = datetime.now()
+
+		if isinstance(order_datetime, datetime):
+			order_datetime = order_datetime.strftime("%m/%d/%Y, %H:%M:%S")
+
+		self.redisClient.hset(self.last_orders_queue, ticker, order_datetime)
+
+	def get_order(self, ticker):
+		return self.__maybe_decode_utf8(
+			self.redisClient.hget(self.last_orders_queue, ticker)
+		)
+
+	def is_there_a_recent_order(self, ticker, days_between_orders = 2):
+		from datetime import datetime
+		last_order = self.get_order(ticker)
+  
+		if last_order is None:
+			return False
+
+		current_timestamp = datetime.now()
+		last_order_datetime = datetime.strptime(last_order, "%m/%d/%Y, %H:%M:%S")
+		days_since_last_trade = (current_timestamp - last_order_datetime).days
+		print('Days passed since last trade {}'.format(days_since_last_trade))
+
+		if days_since_last_trade < days_between_orders:
+			return False
+
+		return True
 
 
 	def __maybe_decode_utf8(self, payload):
