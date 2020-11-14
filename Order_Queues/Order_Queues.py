@@ -69,6 +69,7 @@ class Order_Queues:
 
 	def is_there_a_recent_order(self, ticker, days_between_orders = 2):
 		from datetime import datetime
+		import numpy as np
 		last_order = self.get_order(ticker)
   
 		if last_order is None:
@@ -76,7 +77,8 @@ class Order_Queues:
 
 		current_timestamp = datetime.now()
 		last_order_datetime = datetime.strptime(last_order, "%m/%d/%Y, %H:%M:%S")
-		days_since_last_trade = (current_timestamp - last_order_datetime).days
+  
+		days_since_last_trade = np.busday_count(last_order_datetime.date(), current_timestamp.date())
 		print('Days passed since last trade {}'.format(days_since_last_trade))
 
 		if days_since_last_trade < days_between_orders:
