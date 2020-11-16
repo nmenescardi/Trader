@@ -22,7 +22,7 @@ class RSI_OverSold:
     ):
 		#print(locals())
 
-		if self.order_queues.is_there_a_recent_order(ticker, days_between_orders):
+		if self.queuesHandler.is_there_a_recent_order(ticker, days_between_orders):
 			return
 		
 		# Calculate RSI using Lower TimeFrame (ltf) data
