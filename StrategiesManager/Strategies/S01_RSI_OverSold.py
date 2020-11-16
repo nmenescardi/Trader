@@ -49,6 +49,8 @@ class RSI_OverSold:
 				stopLoss = False,
 				takeProfit = round(takeProfit, 2),
 			))
+
+			self.queuesHandler.save_order(ticker)
    
 			print('Opening a position for {}. Take profit {}'.format(ticker, takeProfit))
 
