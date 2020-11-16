@@ -33,7 +33,8 @@ class StrategiesSetup():
 			{'ticker': 'DHI', 'rsi_period' : 2, 'rsi_limit': 5, 'tp_percentage': 5 },
 			{'ticker': 'DHR', 'rsi_period' : 9, 'rsi_limit': 25, 'tp_percentage': 4 },
 			{'ticker': 'DKS', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 6 },
-			{'ticker': 'DOCU', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 },	
+			#{'ticker': 'DOCU', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 },	# Winner
+			{'ticker': 'DOCU', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 2 },	# Bottom
 			{'ticker': 'DOYU', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 2 },	
 			{'ticker': 'DPZ', 'rsi_period' : 2, 'rsi_limit': 5, 'tp_percentage': 2 },	
 			{'ticker': 'DRI', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 10 },	
@@ -120,7 +121,8 @@ class StrategiesSetup():
 			{'ticker': 'WIX', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 5 },	
 			{'ticker': 'Z', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 10 },	
 			{'ticker': 'ZEN', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 6 },	
-			{'ticker': 'ZM', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 25 }, #Update	
+			#{'ticker': 'ZM', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 25 }, # Winner	
+			{'ticker': 'ZM', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 1 }, # From bottom	
 			{'ticker': 'ZNGA', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'ZTS', 'rsi_period' : 25, 'rsi_limit': 30, 'tp_percentage': 5 },	
 		]
