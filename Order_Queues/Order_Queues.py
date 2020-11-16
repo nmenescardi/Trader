@@ -81,7 +81,7 @@ class Order_Queues:
 		days_since_last_trade = np.busday_count(last_order_datetime.date(), current_timestamp.date())
 		print('Days passed since last trade {}'.format(days_since_last_trade))
 
-		if days_since_last_trade < days_between_orders:
+		if days_since_last_trade >= days_between_orders:
 			return False
 
 		return True
