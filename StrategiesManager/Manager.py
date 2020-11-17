@@ -11,7 +11,10 @@ class Manager:
 	def run(self):
 		while(True):
 			for strategy_key, strategy_config in StrategiesSetup.config.items():
-				for params in strategy_config:
-					strategy = self.strategies_factory.make(strategy_key)
-					strategy.perform(**params)
-					#time.sleep(1)
+				try:
+					for params in strategy_config:
+						strategy = self.strategies_factory.make(strategy_key)
+						strategy.perform(**params)
+				except Exception as e:
+					print('Exception reading data feed: {}.'.format(e))
+					time.sleep(120)
