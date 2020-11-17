@@ -138,7 +138,7 @@ class EToro:
 			balance = int(balance_rounded_str)
 		except NoSuchElementException as e:
 			# If fails. At least try to open a position if it's possible
-			self.logger.info('0023 - Error trying to grab balance')
+			self.logger.info('0023 - Error trying to grab balance. Exception: {}.'.format(e))
 			balance = 99999999
 		return balance		
 
