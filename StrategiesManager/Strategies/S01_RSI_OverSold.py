@@ -21,6 +21,7 @@ class RSI_OverSold:
     	days_between_orders=2,
     ):
 		#print(locals())
+		print(ticker)
 
 		if self.queuesHandler.is_there_a_recent_order(ticker, days_between_orders):
 			return
@@ -36,7 +37,6 @@ class RSI_OverSold:
 		current_rsi = round(rsi_serie[-1], 2)
 		previous_rsi = round(rsi_serie[-2], 2)
 
-		print(ticker)
 		#self.__print_df_tail(df_ltf)
 		print("Current RSI({}): {}.. Previous RSI value: {}".format(rsi_period, current_rsi, previous_rsi))
 
