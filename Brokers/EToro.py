@@ -7,13 +7,14 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 class EToro:
 
-	def __init__(self, driver, credentials, logger, is_virtual_portfolio = True,  is_single_position_mode = True):
+	def __init__(self, driver, credentials, logger, order_queues, is_virtual_portfolio = True,  is_single_position_mode = True):
 		self.driver = driver
 		self.credentials = credentials
 		self.is_virtual_portfolio = is_virtual_portfolio
 		self.open_positions = set()
 		self.open_orders = set()
 		self.logger = logger
+		self.order_queues = order_queues
 		self.is_single_position_mode = is_single_position_mode
 
 	
@@ -71,7 +72,8 @@ class EToro:
    
 		self.check_proper_portfolio_is_selected()
 
-		# Go to stock url
+		# Go to stock url. 
+		# TODO: update with 'ticker/url map' 
 		self.driver.get("https://www.etoro.com/markets/" + position.ticker)
 		
  		# Perform trade
@@ -184,16 +186,20 @@ class EToro:
 		return str(Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE + Keys.BACKSPACE)
 
 
-	def close_position(self, ticker):
-		self.check_proper_portfolio_is_selected()
-
+	def __go_to_position(self, ticker):
 		target_url = "https://www.etoro.com/portfolio/" + ticker
 		self.driver.get(target_url)
-		self.wait(factor = 2.5)
+		self.wait(factor = 3)
 		
 		if self.driver.current_url != target_url:
 			self.logger.info('0018 - There is no open position for {}.'.format(ticker))
 			return True #TODO: returning True to avoid infinite loops. Send notification when it happens
+
+
+	def close_position(self, ticker):
+		self.check_proper_portfolio_is_selected()
+
+		self.__go_to_position(ticker)
  
 		try:
 			self.click("//div[@data-etoro-automation-id='open-trades-table-body-cell-user-actions-close-button']")
@@ -256,6 +262,17 @@ class EToro:
 			self.open_orders.add(ticker)
 
 		self.logger.info('0022 - Orders opened: {}'.format(', '.join(str(e) for e in self.open_orders)))
+
+
+	def update_amount_opened_positions(self):
+		for ticker in self.open_positions:
+			self.__go_to_position(ticker)
+
+			positions = self.driver.find_elements_by_xpath("//div[@data-etoro-automation-id='portfolio-open-trades-table-body-cell-container-action']")
+
+			amount = len(positions)
+			self.order_queues.save_positions_amount(ticker, amount)
+			self.logger.info('0024 - {} has {} Position/s opened.'.format(ticker, amount))
 
 
 	def wait_for_element(self, xPath, times = 0, action = None):

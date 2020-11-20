@@ -19,11 +19,20 @@ class RSI_OverSold:
     	ltf_interval="5m",
     	ltf_period="2d",
     	days_between_orders=2,
+    	max_positions_amount=3,
     ):
 		#print(locals())
 		print(ticker)
 
 		if self.queuesHandler.is_there_a_recent_order(ticker, days_between_orders):
+			print('There is a recent order for {}'.format(ticker))
+			return
+
+		positions_amount = int(self.queuesHandler.get_positions_amount(ticker))
+		print('There are {} opened positions for {}'.format(positions_amount, ticker))
+
+		if max_positions_amount <= positions_amount:
+			print('Already reached the limit of positions for {}'.format(ticker))
 			return
 		
 		# Calculate RSI using Lower TimeFrame (ltf) data

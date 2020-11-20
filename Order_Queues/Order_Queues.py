@@ -14,6 +14,7 @@ class Order_Queues:
 		self.orders_to_open_queue = os.getenv("REDIS_OPEN_QUEUE_KEY")
 		self.orders_to_close_queue = os.getenv("REDIS_CLOSE_QUEUE_KEY")
 		self.last_orders_queue = os.getenv("REDIS_LAST_ORDERS_QUEUE_KEY")
+		self.positions_amount_queue = os.getenv("REDIS_POSITIONS_AMOUNT_QUEUE_KEY")
 
 
 	def get_position_to_open(self):
@@ -88,6 +89,28 @@ class Order_Queues:
 
 	def empty_order_queue(self):
 		self.__empty_queue(self.last_orders_queue)
+
+
+	def save_positions_amount(self, ticker, amount = 0):
+		self.redisClient.hset(self.positions_amount_queue, ticker.lower(), amount)
+
+	def get_positions_amount(self, ticker):
+		return self.__maybe_decode_utf8_as_int(
+			self.redisClient.hget(self.positions_amount_queue, ticker.lower())
+		)
+		
+	def empty_positions_amount_queue(self):
+		self.__empty_queue(self.positions_amount_queue)
+
+
+	def __maybe_decode_utf8_as_int(self, payload, default = 0):
+		try:
+			payload_int = payload.decode('utf-8')
+			if payload_int is None:
+				payload_int = default
+		except (Exception):
+			payload_int = default
+		return payload_int
 
 
 	def __maybe_decode_utf8(self, payload):
