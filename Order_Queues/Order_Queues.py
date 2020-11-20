@@ -86,6 +86,9 @@ class Order_Queues:
 
 		return True
 
+	def empty_order_queue(self):
+		self.__empty_queue(self.last_orders_queue)
+
 
 	def __maybe_decode_utf8(self, payload):
 		try:
