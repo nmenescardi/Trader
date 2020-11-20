@@ -12,8 +12,8 @@ class Manager:
 		while(True):
 			for strategy_key, strategy_config in StrategiesSetup.config.items():
 				try:
+					strategy = self.strategies_factory.make(strategy_key)
 					for params in strategy_config:
-						strategy = self.strategies_factory.make(strategy_key)
 						strategy.perform(**params)
 				except Exception as e:
 					print('Exception reading data feed: {}.'.format(e))
