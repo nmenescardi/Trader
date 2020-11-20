@@ -227,10 +227,6 @@ class EToro:
 
 
 	def update_open_positions(self):
-		# Update positions only for single position mode
-		if not self.is_single_position_mode:
-			return
-
 		self.go_to_portfolio()
   
 		elements = self.driver.find_elements_by_xpath("//div[@data-etoro-automation-id='portfolio-overview-table-body-cell-market-name']")
