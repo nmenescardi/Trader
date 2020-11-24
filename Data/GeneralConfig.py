@@ -12,6 +12,14 @@ class GeneralConfig(AbstractDAO):
 			return last_portfolio_positions_update[0]
 
 
+	def update_last_portfolio_positions_flag(self):
+		cursor = self.execute(
+			"UPDATE general_config SET last_portfolio_positions_update = %s;", 
+			(datetime.now().date(),)
+		)
+		self.db.commit()
+
+
 	def should_update_positions(self, days_between_updates = 1):
 		last_positions_update = self.get_last_portfolio_positions_update()
 
