@@ -20,9 +20,9 @@ class DB():
 			self.close()
 
 
-	def cursor(self):
+	def cursor(self, buffered = False):
 		if (self.connection.is_connected()):
-			self.inner_cursor = self.connection.cursor()
+			self.inner_cursor = self.connection.cursor(buffered=buffered)
 			return self.inner_cursor
 
 		#TODO: reconnect
@@ -33,3 +33,6 @@ class DB():
 		if (self.connection.is_connected()):
 				self.inner_cursor.close()
 				self.connection.close()
+
+	def commit(self):
+		self.connection.commit()
