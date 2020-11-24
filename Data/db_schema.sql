@@ -1,5 +1,5 @@
 
-DROP DATABASE IF EXISTS trader;
+-- DROP DATABASE IF EXISTS trader;
 
 CREATE DATABASE IF NOT EXISTS trader;
 USE trader;
@@ -138,4 +138,12 @@ CREATE TABLE IF NOT EXISTS general_config (
 );
 
 
+-- *********************************
+-- Insert Default Values
+-- *********************************
+
+-- Some pass value to force checking the portfolio amount
+INSERT INTO general_config (last_portfolio_positions_update)
+SELECT subdate(CURRENT_DATE, 5) FROM DUAL
+WHERE NOT EXISTS (SELECT * FROM general_config);
 
