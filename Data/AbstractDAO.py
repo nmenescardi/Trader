@@ -11,11 +11,15 @@ class AbstractDAO:
 		try:
 			cursor = self.db.cursor(buffered=True)
 			cursor.execute(query, params, multi)
-			#print(cursor.statement)
-			return cursor
+			result = cursor
 
 		except Exception as e:
-			#print(cursor.statement)
 			print("Error while querying the DB", e)
 			self.db.close()
-			return None
+			result = None
+
+		finally:
+			if self.db.debug_mode:
+				print(cursor.statement)
+
+			return result

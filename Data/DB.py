@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import Error
+from distutils.util import strtobool
 
 class DB():
 	def __init__(self):
@@ -12,6 +13,8 @@ class DB():
 			'user' : os.getenv("DB_USER"),
 			'password' : os.getenv("DB_PASSWORD"),
 		}
+
+		self.debug_mode = bool(strtobool(os.getenv("DEBUG_MODE")))
 
 		try:
 			self.connection = mysql.connector.connect( **credentials )
