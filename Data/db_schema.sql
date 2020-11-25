@@ -147,3 +147,9 @@ INSERT INTO general_config (last_portfolio_positions_update)
 SELECT subdate(CURRENT_DATE, 5) FROM DUAL
 WHERE NOT EXISTS (SELECT * FROM general_config);
 
+
+#UPDATE general_config SET last_portfolio_positions_update = subdate(CURRENT_DATE, 5)
+
+
+
+
