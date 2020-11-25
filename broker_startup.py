@@ -7,6 +7,7 @@ from Models.Credentials import Credentials
 from Brokers.EToro import EToro
 from Order_Queues.Order_Queues import Order_Queues
 from Logger import Logger
+from Data.GeneralConfig import GeneralConfig
 
 # Load Env variables:
 load_dotenv()
@@ -45,7 +46,12 @@ def open_session():
 	try:
 		eToro = EToro(driver, credentials, logger, order_queues, IS_VIRTUAL_PORTFOLIO, SHOULD_OPEN_SINGLE_POSITION)
 		eToro.init()
-		eToro.update_amount_opened_positions()
+
+		general_config = GeneralConfig()
+		if general_config.should_update_positions(): # Once per day
+			order_queues.empty_positions_amount_queue() # empty old list
+			eToro.update_amount_opened_positions()
+			general_config.update_last_portfolio_positions_flag()
 
 		while True:
 			if SHOULD_PERFORM_TRADE:
