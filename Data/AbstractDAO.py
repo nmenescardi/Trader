@@ -1,4 +1,4 @@
-from DB import DB
+from Data.DB import DB
 from abc import ABC, abstractmethod
 
 class AbstractDAO:
