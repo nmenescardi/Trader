@@ -144,7 +144,7 @@ class StrategiesSetup():
 			{'ticker': 'BKNG', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 1 },	
 			{'ticker': 'CNMD', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 1 },	
 			{'ticker': 'DENN', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 1 },	
-			{'ticker': 'DKNG', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 },	
+			{'ticker': 'DKNG', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 }, # manual TP	
 			{'ticker': 'EEFT', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
 			{'ticker': 'EV', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 },	
 			{'ticker': 'EXPE', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
@@ -162,7 +162,7 @@ class StrategiesSetup():
 			{'ticker': 'PFGC', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 2 },	
 			{'ticker': 'PI', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'PLAY', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
-			{'ticker': 'PLTR', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 1 },	
+			{'ticker': 'PLTR', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 1 }, # manual TP	
 			{'ticker': 'QCOM', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'QRVO', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 1 },	
 			{'ticker': 'RGA', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 },	

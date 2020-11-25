@@ -76,6 +76,7 @@ class Order_Queues:
 		if last_order is None:
 			return False
 
+		# TODO: accept an optional current_timestamp for old data
 		current_timestamp = datetime.now()
 		last_order_datetime = datetime.strptime(last_order, "%m/%d/%Y, %H:%M:%S")
   
