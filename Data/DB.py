@@ -23,9 +23,9 @@ class DB():
 			self.close()
 
 
-	def cursor(self, buffered = False):
+	def cursor(self, named_tuple = False, buffered = True):
 		if (self.connection.is_connected()):
-			self.inner_cursor = self.connection.cursor(buffered=buffered)
+			self.inner_cursor = self.connection.cursor(named_tuple=named_tuple, buffered=buffered)
 			return self.inner_cursor
 
 		#TODO: reconnect

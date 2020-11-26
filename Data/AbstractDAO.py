@@ -7,9 +7,9 @@ class AbstractDAO:
 		self.db = DB()
 
 
-	def execute(self, query, params = None, multi = False):
+	def execute(self, query, params = None, multi = False, named_tuple = False, buffered = True):
 		try:
-			cursor = self.db.cursor(buffered=True)
+			cursor = self.db.cursor(named_tuple=named_tuple, buffered=buffered)
 			cursor.execute(query, params, multi)
 			result = cursor
 
