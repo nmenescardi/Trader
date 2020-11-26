@@ -1,4 +1,5 @@
 from Data.HistoricalData import HistoricalData
+from Data.Stocks import Stocks
 from DataFeed.AlphaVantage import AlphaVantage
 
 class InsertHistoricalData:
@@ -9,13 +10,13 @@ class InsertHistoricalData:
 			self.amount_years = 2
 			self.amount_months = 12
 		else:
-			# Only last two month
+			# Only last two months
 			self.amount_years = 1
 			self.amount_months = 2
 
 
 	def run(self):
-		for ticker in ['AAPL']: #TODO: get from list
+		for ticker in Stocks().get_all():
 
 			df = AlphaVantage().get_data(ticker, amount_years = self.amount_years, amount_months = self.amount_months)
 
@@ -30,6 +31,6 @@ class InsertHistoricalData:
 					low_price = str(row['low']),
 					close_price = str(row['close']),
 					volume = str(row['volume']),
-					timeframe = '5m',
+					timeframe = '5m', #TODO: handle different timeframes
 				)
 				#print(index, row['open'], row['high'], row['low'], row['close'], row['volume'])
