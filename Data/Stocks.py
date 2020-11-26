@@ -9,6 +9,21 @@ class Stocks(AbstractDAO):
 		super(Stocks, self).__init__()
 		self.ticker_ids = {}
 
+	
+	def get_all(self):
+		iterator = self.execute("SELECT * FROM stocks;", named_tuple=True)
+
+		stocks = []
+
+		for stock in iterator:
+			# Update cache
+			self.ticker_ids[stock.ticker] = stock.stock_id
+
+			# Add to result list
+			stocks.append(stock.ticker)
+		
+		return stocks
+
 
 	def get_ticker_id(self, ticker):
 		if ticker in self.ticker_ids:
