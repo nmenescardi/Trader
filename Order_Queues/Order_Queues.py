@@ -68,7 +68,7 @@ class Order_Queues:
 			self.redisClient.hget(self.last_orders_queue, ticker)
 		)
 
-	def is_there_a_recent_order(self, ticker, days_between_orders = 2):
+	def is_there_a_recent_order(self, ticker, days_between_orders = 2, date_to_compare = None):
 		from datetime import datetime
 		import numpy as np
 		last_order = self.get_order(ticker)
@@ -76,11 +76,13 @@ class Order_Queues:
 		if last_order is None:
 			return False
 
-		# TODO: accept an optional current_timestamp for old data
-		current_timestamp = datetime.now()
+		# No Date was passed -> Compare with current time
+		if date_to_compare is None:
+			date_to_compare = datetime.now()
+
 		last_order_datetime = datetime.strptime(last_order, "%m/%d/%Y, %H:%M:%S")
   
-		days_since_last_trade = np.busday_count(last_order_datetime.date(), current_timestamp.date())
+		days_since_last_trade = np.busday_count(last_order_datetime.date(), date_to_compare.date())
 		print('Days passed since last trade {}'.format(days_since_last_trade))
 
 		if days_since_last_trade >= days_between_orders:
