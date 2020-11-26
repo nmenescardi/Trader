@@ -35,14 +35,15 @@ class AlphaVantage():
 		url = '{}?function=TIME_SERIES_INTRADAY_EXTENDED&symbol={}&interval={}&slice={}&adjusted={}&apikey={}'
 
 		try:
+			time.sleep(5)
 			data = pd.read_csv(url.format(self.apiUrl, symbol, self.get_interval(interval), slice, adjusted,  self.key))
 
 			print('Done slice {}. Ticker: {}'.format(slice, symbol))
 
 			return self.remove_extended_hours(data)
 
-		except Exception:
-			print('Exception getting slice {}. Ticker: {}'.format(slice, symbol))
+		except Exception as e:
+			print('Exception getting slice {}. Ticker: {}. Exception: {}'.format(slice, symbol, e))
 			return pd.DataFrame()
 
 
