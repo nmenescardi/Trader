@@ -1,5 +1,6 @@
 .env
 test*.py
+test*.sql
 *.pyc
 debug.log
 original_files/
