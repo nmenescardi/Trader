@@ -5,8 +5,16 @@ from datetime import datetime
 
 class HistoricalData(AbstractDAO):
 
-	def insert_stock_price(self, ticker, time_price, open_price, high_price, low_price, close_price, volume, timeframe):
+	def __init__(self):
+		super(HistoricalData, self).__init__()
+		self.ticker_ids = {}
 
+
+	def get_ticker_id(self, ticker):
+		if ticker in self.ticker_ids:
+			return self.ticker_ids[ticker]
+
+		#TODO: Refactor into separate 'Stocks' DAO
 		cursor = self.execute("SELECT stock_id FROM stocks WHERE ticker = %s;",
 			(ticker,)
 		)
@@ -14,9 +22,16 @@ class HistoricalData(AbstractDAO):
 		ticker_id_result = cursor.fetchone()
 
 		if ticker_id_result is None:
-			return
+			raise Exception #TODO: custom Exception
 
-		ticker_id = ticker_id_result[0]
+		self.ticker_ids[ticker] = ticker_id_result[0]
+
+		return ticker_id_result[0]
+
+
+	def insert_stock_price(self, ticker, time_price, open_price, high_price, low_price, close_price, volume, timeframe):
+
+		ticker_id = self.get_ticker_id(ticker)
 
 		self.execute(
 			"""
