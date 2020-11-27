@@ -69,7 +69,7 @@ class StrategiesSetup():
 			{'ticker': 'MSCI', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 2 },	
 			{'ticker': 'MTCH', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'MTH', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 2 },	
-			{'ticker': 'NIO', 'rsi_period' : 2, 'rsi_limit': 10, 'tp_percentage': 15 },	# Manual TP
+sa			{'ticker': 'NIO', 'rsi_period' : 2, 'rsi_limit': 10, 'tp_percentage': 15, 'days_between_orders' : 1 },	# Manual TP
 			{'ticker': 'NIU', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 15 },	# Manual TP
 			{'ticker': 'NKE', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 3 },	
 			{'ticker': 'NOW', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 },	
@@ -99,7 +99,7 @@ class StrategiesSetup():
 			{'ticker': 'SNAP', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 1 },	
 			{'ticker': 'SNOW', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 },	# Manual TP
 			{'ticker': 'SPWR', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 5 },	
-			{'ticker': 'SQ', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 1 },	
+			{'ticker': 'SQ', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 1, 'days_between_orders' : 1 },	
 			{'ticker': 'STMP', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 },	
 			{'ticker': 'STNE', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'TGT', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 2 },	
