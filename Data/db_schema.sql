@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS indicators (
 	date_time DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
 	created_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
 	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+	UNIQUE KEY indicators_single_value (stock_id, indicator_key, main_timeframe, date_time),
 	FOREIGN KEY (stock_id) REFERENCES stocks (stock_id)
 );
 
