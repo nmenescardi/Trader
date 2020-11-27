@@ -49,7 +49,7 @@ class StrategiesSetup():
 			{'ticker': 'GPI', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
 			{'ticker': 'GPS', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'HD', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 4 },	
-			{'ticker': 'HUBS', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 5 },	
+			#{'ticker': 'HUBS', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 5 },	
 			{'ticker': 'IBP', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'IDXX', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'INFY', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 1 },	

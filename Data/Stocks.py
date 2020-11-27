@@ -7,7 +7,7 @@ class Stocks(AbstractDAO):
 
 	def __init__(self):
 		super(Stocks, self).__init__()
-		self.ticker_ids = {}
+		self.ticker_ids = {} #TODO: static property?
 
 	
 	def get_all(self):
