@@ -2,7 +2,7 @@ from Data.HistoricalData import HistoricalData
 from Data.Stocks import Stocks
 from DataFeed.AlphaVantage import AlphaVantage
 
-class InsertHistoricalData:
+class InsertIntradayData:
 
 	def __init__(self, full_data = False):
 		if full_data:
