@@ -1,6 +1,7 @@
 from HistoricalData.Indicators.SMA import SMA
-from HistoricalData.Indicators.RSI import RSI
 from HistoricalData.Indicators.Is_Above_SMAs import Is_Above_SMAs
+from HistoricalData.Indicators.Is_Trending_Above_SMAs import Is_Trending_Above_SMAs
+from HistoricalData.Indicators.RSI import RSI
 
 class DailySetup():
 	
@@ -16,6 +17,10 @@ class DailySetup():
 		Is_Above_SMAs : [
 			{ 'periods': ['50', '200'] },
 			{ 'periods': ['20', '50', '120', '200'] },
+		],
+
+		Is_Trending_Above_SMAs : [
+			{ 'fast_MA': '20', 'med_MA': '50', 'slow_MA': '200' },
 		],
 
 		RSI : [
