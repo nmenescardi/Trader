@@ -16,6 +16,9 @@ class InsertDailyIndicators:
 			print('Calculating indicators for {}'.format(ticker))
 
 			data = YFinanceFeed().get(ticker, period = self.period, interval = "1d")
+			if data.empty:
+				print('No data for {}'.format(ticker))
+				continue
 
 			for indicator_class, indicator_config in DailySetup.config.items():
 				
