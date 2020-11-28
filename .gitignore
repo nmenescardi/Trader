@@ -5,3 +5,5 @@ test*.sql
 debug.log
 original_files/
 *.log
+datasets/
+results/
