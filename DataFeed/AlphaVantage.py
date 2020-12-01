@@ -30,30 +30,42 @@ class AlphaVantage():
 		return data.between_time('09:30', '16:00')
 
 
-	def time_series_intraday_extended(self, symbol, interval, slice, adjusted):
+	def time_series_intraday_extended(self, ticker, interval, data_slice, adjusted, seconds_to_wait):
 		
 		url = '{}?function=TIME_SERIES_INTRADAY_EXTENDED&symbol={}&interval={}&slice={}&adjusted={}&apikey={}'
 
-		data = pd.read_csv(url.format(self.apiUrl, symbol, self.get_interval(interval), slice, adjusted,  self.key))
+		data = pd.read_csv(url.format(self.apiUrl, ticker, self.get_interval(interval), data_slice, adjusted,  self.key))
 
-		seconds_to_wait = 60
-		print('Done slice {}. Ticker: {}. Waiting {} seconds...'.format(slice, symbol, seconds_to_wait))
+		
+		print('Done slice {}. Ticker: {}. Waiting {} seconds...'.format(data_slice, ticker, seconds_to_wait))
 		time.sleep(seconds_to_wait)
 
 		return self.remove_extended_hours(data)
 
 
-	def get_data(self, ticker = 'AAPL', month = 12, year = 2):
+	def get_data(self, ticker = 'AAPL', month = 12, year = 2, data_slice = None, tries = 1):
 
 		try:
-			data_slice = self.get_slice(year, month)
+			if data_slice is None:
+				data_slice = self.get_slice(year, month)
+
 			return self.time_series_intraday_extended(
-				ticker, 
-				self.Interval._5min, 
-				data_slice, 
-				self.Adjusted.false
+				ticker = ticker, 
+				interval = self.Interval._5min, 
+				data_slice = data_slice, 
+				adjusted = self.Adjusted.false,
+				seconds_to_wait = 30 * tries
 			)
 		except Exception as e:
-			#TODO: try again or save it for later
-			print('Exception getting {}. Ticker: {}. Exception: {}'.format(data_slice, ticker, e))
+
+			print('Exception getting {}. Ticker: {}. Exception: {}. Tries: {}'.format(data_slice, ticker, e, tries))
+			print(type(e))
+
+			if tries < 3:
+				return self.get_data(
+					ticker = ticker,
+					data_slice = data_slice,
+					tries = tries + 1
+				)
+			
 			return pd.DataFrame()
