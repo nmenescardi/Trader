@@ -34,32 +34,26 @@ class AlphaVantage():
 		
 		url = '{}?function=TIME_SERIES_INTRADAY_EXTENDED&symbol={}&interval={}&slice={}&adjusted={}&apikey={}'
 
+		data = pd.read_csv(url.format(self.apiUrl, symbol, self.get_interval(interval), slice, adjusted,  self.key))
+
+		seconds_to_wait = 60
+		print('Done slice {}. Ticker: {}. Waiting {} seconds...'.format(slice, symbol, seconds_to_wait))
+		time.sleep(seconds_to_wait)
+
+		return self.remove_extended_hours(data)
+
+
+	def get_data(self, ticker = 'AAPL', month = 12, year = 2):
+
 		try:
-			time.sleep(5)
-			data = pd.read_csv(url.format(self.apiUrl, symbol, self.get_interval(interval), slice, adjusted,  self.key))
-
-			print('Done slice {}. Ticker: {}'.format(slice, symbol))
-
-			return self.remove_extended_hours(data)
-
+			data_slice = self.get_slice(year, month)
+			return self.time_series_intraday_extended(
+				ticker, 
+				self.Interval._5min, 
+				data_slice, 
+				self.Adjusted.false
+			)
 		except Exception as e:
-			print('Exception getting slice {}. Ticker: {}. Exception: {}'.format(slice, symbol, e))
+			#TODO: try again or save it for later
+			print('Exception getting {}. Ticker: {}. Exception: {}'.format(data_slice, ticker, e))
 			return pd.DataFrame()
-
-
-	def get_data(self, symbol = 'AAPL', amount_years = 2, amount_months = 12):
-
-		data = []
-		
-		for year in range(1, amount_years + 1):
-			for month in range(1, amount_months + 1):
-				data.append(
-    				self.time_series_intraday_extended(
-            			symbol, 
-            			self.Interval._5min, 
-            			self.get_slice(year,month), 
-            			self.Adjusted.false
-            		)
-    			)
-		
-		return pd.concat(data) # return single DF

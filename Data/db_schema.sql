@@ -69,26 +69,27 @@ CREATE TABLE IF NOT EXISTS stock_prices (
 	stock_price_id INT AUTO_INCREMENT PRIMARY KEY,
 	stock_id INT,
 	time_price DATETIME NOT NULL,
-	open_price DECIMAL(11,6) NULL DEFAULT NULL,
-	high_price DECIMAL(11,6) NULL DEFAULT NULL,
-	low_price DECIMAL(11,6) NULL DEFAULT NULL,
-	close_price DECIMAL(11,6) NULL DEFAULT NULL,
-	volume BIGINT(20) NULL DEFAULT NULL,
+	open_price DECIMAL(11,4) NULL DEFAULT NULL,
+	high_price DECIMAL(11,4) NULL DEFAULT NULL,
+	low_price DECIMAL(11,4) NULL DEFAULT NULL,
+	close_price DECIMAL(11,4) NULL DEFAULT NULL,
+	volume INT NULL DEFAULT NULL,
 	timeframe VARCHAR(5) NULL DEFAULT "5m",
 	created_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
 	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
-	UNIQUE KEY historical_price_stock_time (stock_id, time_price),
+	UNIQUE KEY historical_price_stock_time (stock_id, time_price, timeframe),
 	FOREIGN KEY (stock_id) REFERENCES stocks (stock_id)
 );
 
 
 CREATE TABLE IF NOT EXISTS strategies (
 	strategy_id INT AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(5) NULL DEFAULT NULL,
-	version VARCHAR(5) NULL DEFAULT NULL,
-	type VARCHAR(5) NULL DEFAULT NULL,
+	name VARCHAR(100) NULL DEFAULT NULL,
+	version VARCHAR(10) NULL DEFAULT NULL,
+	type VARCHAR(100) NULL DEFAULT NULL,
 	created_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
-	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
+	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+	UNIQUE KEY strategies_name_version (name, version)
 );
 
 
@@ -1181,17 +1182,8 @@ VALUES
 	('WHR','NYSE'),
 	('NET','NYSE')
 ;
--- *********************************
--- Insert Testing Data
--- *********************************
--- UPDATE general_config SET last_portfolio_positions_update = subdate(CURRENT_DATE, 5)
 
-
-INSERT IGNORE INTO stock_prices 
-	(stock_id, time_price, open_price, high_price, low_price, close_price, volume, timeframe)
-VALUES 
-	(1,'2018-11-14 09:30','47.437','47.476','47.403','47.466','123164','5m'),
-	(8,'2018-11-14 09:30','47.437','47.476','47.403','47.466','123164','5m'),
-	(1,'2018-11-14 09:35','47.437','47.476','47.403','47.466','123164','5m')
-;
-
+INSERT IGNORE INTO strategies 
+	(name, version, type)
+VALUES
+	('S01_RSI_OverSold', '1.0', 'Mean Reversion'),

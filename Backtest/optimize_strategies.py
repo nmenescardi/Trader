@@ -3,7 +3,7 @@ from __future__ import (absolute_import, division, print_function,
 import os.path
 
 from datetime import datetime
-from .Strategies.S02_RSI_OverSold import RSI_OverSold
+from .Strategies.S01_RSI_OverSold import RSI_OverSold
 from .Strategies.S05_RSI_OSOB import RSI_OSOB
 from .StrategyOptimizer import StrategyOptimizer
 

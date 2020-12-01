@@ -5,7 +5,7 @@ import sys, os, itertools
 from datetime import datetime
 from matplotlib import warnings
 import backtrader as bt
-from Strategies.S02_RSI_OverSold import RSI_OverSold
+from Strategies.S01_RSI_OverSold import RSI_OverSold
 
 import time
 start_time = time.time()
@@ -31,7 +31,7 @@ def run_strategies(
 	# Create a cerebro entity
 	cerebro = bt.Cerebro(optreturn=False)
 
-	results_file_path = "results/S02_RSI_OverSold_5min/{}_{}.csv".format(ticker_file_name, from_date.strftime('%Y-%m-%d'))
+	results_file_path = "results/S01_RSI_OverSold_5min/{}_{}.csv".format(ticker_file_name, from_date.strftime('%Y-%m-%d'))
 
 	# Datas are in a subfolder of the samples. Need to find where the script is
 	# because it could have been called from anywhere
