@@ -18,19 +18,22 @@ class InsertIntradayData:
 	def run(self):
 		for ticker in Stocks().get_all():
 
-			df = AlphaVantage().get_data(ticker, amount_years = self.amount_years, amount_months = self.amount_months)
+			for year in range(1, self.amount_years + 1):
+				for month in range(1, self.amount_months + 1):
 
-			historical_data = HistoricalData()
+					df = AlphaVantage().get_data(ticker = ticker, month = month, year = year)
 
-			for index, row in df.iterrows():
-				historical_data.insert_stock_price(
-					ticker = ticker,
-					time_price = str(index),
-					open_price = str(row['open']),
-					high_price = str(row['high']),
-					low_price = str(row['low']),
-					close_price = str(row['close']),
-					volume = str(row['volume']),
-					timeframe = '5m', #TODO: handle different timeframes
-				)
-				#print(index, row['open'], row['high'], row['low'], row['close'], row['volume'])
+					historical_data = HistoricalData()
+
+					for index, row in df.iterrows():
+						historical_data.insert_stock_price(
+							ticker = ticker,
+							time_price = str(index),
+							open_price = str(row['open']),
+							high_price = str(row['high']),
+							low_price = str(row['low']),
+							close_price = str(row['close']),
+							volume = str(row['volume']),
+							timeframe = '5m', #TODO: handle different timeframes
+						)
+						#print(index, row['open'], row['high'], row['low'], row['close'], row['volume'])
