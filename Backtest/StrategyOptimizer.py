@@ -18,7 +18,7 @@ class StrategyOptimizer:
 	def run(self):
 		for optimization in self.optimizations:
 			
-			for ticker in ['AAPL']: #os.listdir( optimization['dataset_dir'] ):
+			for ticker in ['AAPL', 'AAL', 'TSLA']:
 				filename = ticker + '_5min' #TODO: no needed anymore
 				ticker_file_name = filename.split(".")[0]
 
