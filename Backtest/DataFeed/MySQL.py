@@ -9,19 +9,26 @@ class MySQL(DataBase):
 		('todate', datetime.datetime.max),
 	)
 
-	def start(self):
-		self.result = HistoricalData().get_prices(
+	def __init__(self):
+		iterator = HistoricalData().get_prices(
 			ticker = self.p.ticker,
 			from_date = self.p.fromdate,
 			to_date = self.p.todate
 		)
+		self.price_rows = iterator.fetchall()
+
+
+	def start(self):
+		self.price_i = 0
+
 
 	def _load(self):
-		one_row = self.result.fetchone()
-		if one_row is None:
+		if self.price_i >= len(self.price_rows):
 			return False
+		one_row = self.price_rows[self.price_i]
+		self.price_i += 1
 
-		self.lines.datetime[0] = date2num(one_row[0]) # for intraday data, time also need to be combined here.
+		self.lines.datetime[0] = date2num(one_row[0])
 		self.lines.open[0] = float(one_row[1])
 		self.lines.high[0] = float(one_row[2])
 		self.lines.low[0] = float(one_row[3])
