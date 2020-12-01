@@ -1,6 +1,6 @@
 import backtrader as bt
 from .S00_Abstract_Strategy import Abstract_Strategy
-from CustomIndicators.SuperTrend import SuperTrend
+from ..CustomIndicators.SuperTrend import SuperTrend
 
 class RSI_OverSold_SuperTrend(Abstract_Strategy):
 	params = (

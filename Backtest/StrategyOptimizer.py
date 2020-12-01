@@ -2,6 +2,7 @@ import os, sys, itertools
 from datetime import datetime
 import backtrader as bt
 from itertools import product
+from .DataFeed.MySQL import MySQL
 
 class StrategyOptimizer:
 
@@ -17,7 +18,8 @@ class StrategyOptimizer:
 	def run(self):
 		for optimization in self.optimizations:
 			
-			for filename in os.listdir( optimization['dataset_dir'] ):
+			for ticker in ['AAPL', 'AAL', 'TSLA']:
+				filename = ticker + '_5min' #TODO: no needed anymore
 				ticker_file_name = filename.split(".")[0]
 
 				optimization = self.__fill_default(optimization)
@@ -25,11 +27,17 @@ class StrategyOptimizer:
 				if ticker_file_name in optimization['exclude']:
 					continue
 
-				results_file_path = "results/{}/{}_{}.csv".format(optimization['results_folder'], ticker_file_name, optimization['from_date'].strftime('%Y-%m-%d'))
+				results_file_path = "Backtest/results/{}/{}_{}.csv".format(optimization['results_folder'], ticker_file_name, optimization['from_date'].strftime('%Y-%m-%d'))
 				results_file_path = os.path.join(self.mod_path, results_file_path)
 
 				param_names = list(optimization['strategy_params'].keys())
 				param_combinations = (zip(param_names, x) for x in product(*optimization['strategy_params'].values()))
+
+				data = MySQL(
+					ticker = ticker,
+					fromdate = optimization['from_date'],
+					todate = optimization['to_date'],
+				)
 
 				for param_set in param_combinations:
 					print(ticker_file_name)
@@ -37,14 +45,7 @@ class StrategyOptimizer:
 					cerebro = bt.Cerebro(optreturn=False)
 
 					data_file_name = '{}/{}.csv'.format(optimization['dataset_dir'], ticker_file_name)
-					data = bt.feeds.GenericCSVData(
-						dataname=os.path.join(self.mod_path, data_file_name),
-						#dtformat='%Y-%m-%d %H:%M',
-						fromdate = optimization['from_date'],
-						todate = optimization['to_date'],
-						dtformat=optimization['dt_format'],
-						buffered= True,
-					)
+
 					cerebro.adddata(data)
 
 					if optimization['should_resample']:
