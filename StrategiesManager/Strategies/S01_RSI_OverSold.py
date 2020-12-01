@@ -15,7 +15,7 @@ class RSI_OverSold:
     	rsi_period = 5, 
     	rsi_limit = 20, 
     	tp_percentage = 0.5, 
-    	amount = 100, 
+    	amount = 200, 
     	ltf_interval="5m",
     	ltf_period="2d",
     	days_between_orders=2,
