@@ -1,8 +1,8 @@
 import backtrader as bt
 from .S00_Abstract_Strategy import Abstract_Strategy
-from CustomIndicators.ATR_Delta import ATR_Delta
-from CustomIndicators.SuperTrend import SuperTrend
-from CustomIndicators.SMA_Delta import SMA_Delta
+from ..CustomIndicators.ATR_Delta import ATR_Delta
+from ..CustomIndicators.SuperTrend import SuperTrend
+from ..CustomIndicators.SMA_Delta import SMA_Delta
 
 class RSI_OSOB(Abstract_Strategy):
 	params = (
