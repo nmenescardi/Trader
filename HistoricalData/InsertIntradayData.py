@@ -1,6 +1,7 @@
 from Data.HistoricalData import HistoricalData
 from Data.Stocks import Stocks
 from DataFeed.AlphaVantage import AlphaVantage
+import sys
 
 class InsertIntradayData:
 
@@ -21,6 +22,7 @@ class InsertIntradayData:
 			for year in range(1, self.amount_years + 1):
 				for month in range(1, self.amount_months + 1):
 
+					sys.stdout.flush()
 					df = AlphaVantage().get_data(ticker = ticker, month = month, year = year)
 
 					historical_data = HistoricalData()

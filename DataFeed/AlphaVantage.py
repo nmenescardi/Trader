@@ -57,4 +57,3 @@ class AlphaVantage():
 			#TODO: try again or save it for later
 			print('Exception getting {}. Ticker: {}. Exception: {}'.format(data_slice, ticker, e))
 			return pd.DataFrame()
-	
