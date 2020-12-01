@@ -3,7 +3,7 @@ from __future__ import (absolute_import, division, print_function,
 import os.path
 
 from datetime import datetime
-from Strategies.S02_RSI_OverSold import RSI_OverSold
+from Strategies.S01_RSI_OverSold import RSI_OverSold
 from Strategies.S05_RSI_OSOB import RSI_OSOB
 from StrategyOptimizer import StrategyOptimizer
 
@@ -16,7 +16,7 @@ if __name__ == '__main__':
  
 	strategy_optimizer.add({
 		'dataset_dir' : 'datasets/5min_focus2/dos/',
-		'results_folder' : 'S02_RSI_OverSold_5min_Focus2_DOS',
+		'results_folder' : 'S01_RSI_OverSold_5min_Focus2_DOS',
 		'strategy' : RSI_OverSold,
 		'strategy_params' : {
 			'rsi_length' : [5,9,14,25],
