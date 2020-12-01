@@ -36,7 +36,7 @@ class AlphaVantage():
 
 		data = pd.read_csv(url.format(self.apiUrl, symbol, self.get_interval(interval), slice, adjusted,  self.key))
 
-		seconds_to_wait = 5
+		seconds_to_wait = 60
 		print('Done slice {}. Ticker: {}. Waiting {} seconds...'.format(slice, symbol, seconds_to_wait))
 		time.sleep(seconds_to_wait)
 
