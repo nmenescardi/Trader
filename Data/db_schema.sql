@@ -88,7 +88,8 @@ CREATE TABLE IF NOT EXISTS strategies (
 	version VARCHAR(10) NULL DEFAULT NULL,
 	type VARCHAR(100) NULL DEFAULT NULL,
 	created_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
-	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
+	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+	UNIQUE KEY strategies_name_version (name, version)
 );
 
 
@@ -1182,4 +1183,7 @@ VALUES
 	('NET','NYSE')
 ;
 
-
+INSERT IGNORE INTO strategies 
+	(name, version, type)
+VALUES
+	('S01_RSI_OverSold', '1.0', 'Mean Reversion'),
