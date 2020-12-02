@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from Exceptions.NotAvailableFund import NotAvailableFund
 
 class EToro:
 
@@ -126,7 +127,7 @@ class EToro:
 		# 2 - Check if there is enough balance available
 		if position.amount > self.get_available_balance():
 			self.logger.info('0010 - insufficient funds')
-			return True
+			raise NotAvailableFund
 
 		return False
 
