@@ -1,13 +1,13 @@
 from Data.HistoricalData import HistoricalData
 from Data.Stocks import Stocks
-from Data.AlphaVentageFailedJobs import AlphaVentageFailedJobs
+from Data.AlphaVentageJobs import AlphaVentageJobs
 from DataFeed.AlphaVantage import AlphaVantage
 import sys
 
 class InsertIntradayData:
 
 	def __init__(self, full_data = False):
-		self.failed_jobs_dao = AlphaVentageFailedJobs()
+		self.failed_jobs_dao = AlphaVentageJobs()
 
 		if full_data:
 			# Two years of data
@@ -17,25 +17,6 @@ class InsertIntradayData:
 			# Only last two months
 			self.amount_years = 1
 			self.amount_months = 2
-
-
-	def run(self):
-		for ticker in Stocks().get_all():
-
-			for year in range(1, self.amount_years + 1):
-				for month in range(1, self.amount_months + 1):
-
-					df = AlphaVantage().get_data(ticker = ticker, month = month, year = year)
-
-					if df is None:
-						self.failed_jobs_dao.insert_failed_job(
-							ticker = ticker, 
-							data_month = month, 
-							data_year = year
-						)
-						continue
-
-					self.__insert_results(df, ticker)
 
 
 	def __insert_results(self, df, ticker):
@@ -56,7 +37,7 @@ class InsertIntradayData:
 			#print(index, row['open'], row['high'], row['low'], row['close'], row['volume'])
 
 
-	def run_failed(self):
+	def run(self):
 		job = self.failed_jobs_dao.get_single_job()
 
 		if job is None:
@@ -69,11 +50,27 @@ class InsertIntradayData:
 		)
 
 		if df is None:
-			self.failed_jobs_dao.remove(
+			self.failed_jobs_dao.mark_as_failed(
 				job_id = job['job_id']
 			)
 		
 		else:
 			self.__insert_results(df, job['ticker'])
+			self.failed_jobs_dao.mark_as_finished(
+				job_id = job['job_id']
+			)
 
 		return True
+
+
+	def add_jobs(self):
+		for ticker in Stocks().get_all():
+
+			for year in range(1, self.amount_years + 1):
+				for month in range(1, self.amount_months + 1):
+
+					self.failed_jobs_dao.insert_job(
+						ticker = ticker, 
+						data_month = month, 
+						data_year = year
+					)
