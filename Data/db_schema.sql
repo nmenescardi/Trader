@@ -95,10 +95,10 @@ CREATE TABLE IF NOT EXISTS strategies (
 
 CREATE TABLE IF NOT EXISTS backtest_schedules (
 	backtest_schedule_id INT AUTO_INCREMENT PRIMARY KEY,
-	list_id INT,
+	list_id INT NULL DEFAULT NULL,
 	strategy_id INT,
 	from_date DATETIME NOT NULL,
-	to_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
+	to_date DATETIME NULL DEFAULT NULL,
 	timeframe VARCHAR(5) NULL DEFAULT NULL,
 	frecuency VARCHAR(5) NULL DEFAULT NULL,
 	created_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
@@ -140,6 +140,16 @@ CREATE TABLE IF NOT EXISTS general_config (
 	last_portfolio_positions_update DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
 	should_reset BOOLEAN NOT NULL DEFAULT FALSE,
 	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()
+);
+
+CREATE TABLE IF NOT EXISTS alphaventage_failed_jobs (
+	job_id INT AUTO_INCREMENT PRIMARY KEY,
+	ticker VARCHAR(20) NOT NULL,
+	data_month VARCHAR(20) NOT NULL,
+	data_year VARCHAR(20) NOT NULL,
+	created_date DATETIME NULL DEFAULT CURRENT_TIMESTAMP(),
+	last_updated DATETIME NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+	deleted BOOLEAN NOT NULL DEFAULT 0
 );
 
 
@@ -1186,4 +1196,10 @@ VALUES
 INSERT IGNORE INTO strategies 
 	(name, version, type)
 VALUES
-	('S01_RSI_OverSold', '1.0', 'Mean Reversion'),
+	('S01_RSI_OverSold', '1.0', 'Mean Reversion');
+
+# Initial values for schedule
+INSERT INTO backtest_schedules
+	(strategy_id, from_date, timeframe)
+SELECT 1, '2020-04-01', '5m' FROM DUAL
+WHERE NOT EXISTS (SELECT * FROM backtest_schedules);
