@@ -15,6 +15,7 @@ class Order_Queues:
 		self.orders_to_close_queue = os.getenv("REDIS_CLOSE_QUEUE_KEY")
 		self.last_orders_queue = os.getenv("REDIS_LAST_ORDERS_QUEUE_KEY")
 		self.positions_amount_queue = os.getenv("REDIS_POSITIONS_AMOUNT_QUEUE_KEY")
+		self.available_balance = os.getenv("REDIS_AVAILABLE_BALANCE")
 
 
 	def get_position_to_open(self):
@@ -104,6 +105,25 @@ class Order_Queues:
 		
 	def empty_positions_amount_queue(self):
 		self.__empty_queue(self.positions_amount_queue)
+
+
+	def get_default_amount(self):
+		available_balance = self.redisClient.hget(self.available_balance, 'available_balance')
+
+		if available_balance is None or available_balance == float('inf'):
+			return 50
+
+		available_balance = float(available_balance)
+
+		if available_balance <= 500:
+			return 50
+		elif available_balance > 500 and available_balance < 3500:
+			return 100
+		else:
+			return 200
+
+	def set_available_balance(self, balance):
+		self.redisClient.hset(self.available_balance, 'available_balance', balance)
 
 
 	def __maybe_decode_utf8_as_int(self, payload, default = 0):

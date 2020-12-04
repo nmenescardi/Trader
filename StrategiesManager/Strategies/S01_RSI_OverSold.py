@@ -15,7 +15,7 @@ class RSI_OverSold:
     	rsi_period = 5, 
     	rsi_limit = 20, 
     	tp_percentage = 0.5, 
-    	amount = 100, 
+    	amount = None,
     	ltf_interval="5m",
     	ltf_period="2d",
     	days_between_orders=2,
@@ -23,6 +23,10 @@ class RSI_OverSold:
     ):
 		#print(locals())
 		print(ticker)
+
+		if amount is None:
+			amount = self.queuesHandler.get_default_amount()
+			print("Default Amount is: {}".format(amount))
 
 		if self.queuesHandler.is_there_a_recent_order(ticker, days_between_orders):
 			print('There is a recent order for {}'.format(ticker))

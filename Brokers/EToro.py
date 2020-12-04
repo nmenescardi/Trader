@@ -26,6 +26,8 @@ class EToro:
    
 		self.update_open_positions()
 
+		self.get_available_balance() # Update value on queue
+
 
 	def log_in(self):
 		self.driver.get("https://www.etoro.com/login")
@@ -139,10 +141,13 @@ class EToro:
 			balance_str = str(balance_elem.text).replace('$', '').replace(',', '')
 			balance_rounded_str = balance_str.split(".")[0] 
 			balance = int(balance_rounded_str)
+
 		except NoSuchElementException as e:
 			# If fails. At least try to open a position if it's possible
 			self.logger.info('0023 - Error trying to grab balance. Exception: {}.'.format(e))
-			balance = 99999999
+			balance = float('inf')
+
+		self.order_queues.set_available_balance(balance)
 		return balance		
 
 
