@@ -54,7 +54,7 @@ class AlphaVantage():
 				interval = self.Interval._5min, 
 				data_slice = data_slice, 
 				adjusted = self.Adjusted.false,
-				seconds_to_wait = 30 * tries
+				seconds_to_wait = 15 * tries
 			)
 		except Exception as e:
 

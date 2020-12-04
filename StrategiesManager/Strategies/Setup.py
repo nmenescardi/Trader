@@ -31,7 +31,7 @@ class StrategiesSetup():
 			{'ticker': 'DHR', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 1 },
 			{'ticker': 'DKS', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 1 },
 			{'ticker': 'DOCU', 'rsi_period' : 9, 'rsi_limit': 30, 'tp_percentage': 2 },
-			{'ticker': 'DOYU', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 2 },	
+			#{'ticker': 'DOYU', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 2 },	
 			{'ticker': 'DPZ', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 },	
 			{'ticker': 'DRI', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 4 },	
 			{'ticker': 'EDU', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 3 },	
