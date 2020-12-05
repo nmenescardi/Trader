@@ -29,7 +29,7 @@ class GeneralConfig(AbstractDAO):
 		current_timestamp = datetime.now()
 
 		days_since_last_update = np.busday_count(last_positions_update.date(), current_timestamp.date())
-		print('Days passed since last portfolio positions update: {}'.format(days_since_last_update))
+		#print('Days passed since last portfolio positions update: {}'.format(days_since_last_update))
 
 		if days_since_last_update >= days_between_updates:
 			return True
