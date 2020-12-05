@@ -1,0 +1,1 @@
+#***  5 -  etoro update positions 30 mins before market opens?
