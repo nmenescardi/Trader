@@ -1,7 +1,6 @@
 from HistoricalData.InsertDailyIndicators import InsertDailyIndicators
+from Helpers.Market import Market  
 
-
-# Daily Indicator. After market closed? ***
-
-#TODO: Check if market is open using helper
-InsertDailyIndicators().run()
+if (Market().is_market_open()):
+	# Daily Indicator. After market closed? ***
+	InsertDailyIndicators().run()
