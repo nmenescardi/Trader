@@ -48,10 +48,6 @@ def open_session():
 		eToro.init()
 
 		general_config = GeneralConfig()
-		if general_config.should_update_positions(): # Once per day
-			order_queues.empty_positions_amount_queue() # empty old list
-			eToro.update_amount_opened_positions()
-			general_config.update_last_portfolio_positions_flag()
 
 		while True:
 			try:
@@ -76,6 +72,14 @@ def open_session():
 						logger.info('0005 - {} was successfully opened'.format(position.ticker))
 					else:
 						logger.info('0006 - Error trying to open a position for: {}'.format(position.ticker))
+
+				else:
+					# NO position to be open at the moment.
+					# Check if it should update positions
+					if general_config.should_update_positions():
+						order_queues.empty_positions_amount_queue() # empty old list
+						eToro.update_amount_opened_positions()
+						general_config.update_last_portfolio_positions_flag()
 
 			except NotAvailableFund as e:
 				order_queues.remove_position_from_open()
