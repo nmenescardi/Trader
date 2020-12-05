@@ -11,4 +11,5 @@ while True:
 	if not is_there_more or i == alphaventage_limit_per_day:
 		break
 
-# Download and insert intraday data. Once per day after market is closed + 2 hours? ***
+# Download and insert intraday data. 
+# Once per day after market is closed + 2 hours -> https://crontab.guru/#0_18_*_*_1-5
