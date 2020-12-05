@@ -15,7 +15,6 @@ load_dotenv()
 
 CHROME_DRIVER_PATH = os.getenv("CHROME_DRIVER_PATH")
 IS_PRODUCTION_MODE_SET = bool(strtobool(os.getenv("IS_PRODUCTION_MODE_SET")))
-SHOULD_PERFORM_TRADE = bool(strtobool(os.getenv("SHOULD_PERFORM_TRADE")))
 IS_VIRTUAL_PORTFOLIO = bool(strtobool(os.getenv("IS_VIRTUAL_PORTFOLIO")))
 SHOULD_OPEN_SINGLE_POSITION = bool(strtobool(os.getenv("SHOULD_OPEN_SINGLE_POSITION")))
 
@@ -55,34 +54,32 @@ def open_session():
 			general_config.update_last_portfolio_positions_flag()
 
 		while True:
-			if SHOULD_PERFORM_TRADE:
+			try:
+				ticker_to_close = order_queues.get_ticker_to_close()
+				if ticker_to_close is not None:
+					logger.info('0001 - Ticker to Close: {}'.format(ticker_to_close))
+					is_close = eToro.close_position(ticker_to_close)
+					if is_close:
+						order_queues.remove_ticker_from_close()
+						logger.info('0002 - {} was successfully closed'.format(ticker_to_close))
+					else:
+						logger.info('0003 - Error trying to close position for: {}'.format(ticker_to_close))
 
-				try:
-					ticker_to_close = order_queues.get_ticker_to_close()
-					if ticker_to_close is not None:
-						logger.info('0001 - Ticker to Close: {}'.format(ticker_to_close))
-						is_close = eToro.close_position(ticker_to_close)
-						if is_close:
-							order_queues.remove_ticker_from_close()
-							logger.info('0002 - {} was successfully closed'.format(ticker_to_close))
-						else:
-							logger.info('0003 - Error trying to close position for: {}'.format(ticker_to_close))
+				position = order_queues.get_position_to_open()
+				if position is not None:
+					logger.info('0004 - Ticker to Open: {}'.format(position.ticker))
+	
+					is_open = eToro.open_position(position)
+					if is_open:
+						order_queues.remove_position_from_open()
+						order_queues.save_order(position.ticker)
+						logger.info('0005 - {} was successfully opened'.format(position.ticker))
+					else:
+						logger.info('0006 - Error trying to open a position for: {}'.format(position.ticker))
 
-					position = order_queues.get_position_to_open()
-					if position is not None:
-						logger.info('0004 - Ticker to Open: {}'.format(position.ticker))
-		
-						is_open = eToro.open_position(position)
-						if is_open:
-							order_queues.remove_position_from_open()
-							order_queues.save_order(position.ticker)
-							logger.info('0005 - {} was successfully opened'.format(position.ticker))
-						else:
-							logger.info('0006 - Error trying to open a position for: {}'.format(position.ticker))
-
-				except NotAvailableFund as e:
-					order_queues.remove_position_from_open()
-					logger.info('0025 - There is no sufficient balance. The order for {} could not be open'.format(position.ticker))
+			except NotAvailableFund as e:
+				order_queues.remove_position_from_open()
+				logger.info('0025 - There is no sufficient balance. The order for {} could not be open'.format(position.ticker))
 
 	except Exception as e:
 		logger.exception('0007 - Exception trying to open a position')
