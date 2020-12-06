@@ -3,7 +3,7 @@ from HistoricalData.InsertIntradayData import InsertIntradayData
 intraday = InsertIntradayData()
 
 i = 0
-alphaventage_limit_per_day = 450
+alphaventage_limit_per_day = 495
 while True:
 	i+=1
 	is_there_more = intraday.run()
