@@ -14,9 +14,9 @@ class InsertIntradayData:
 			self.amount_years = 2
 			self.amount_months = 12
 		else:
-			# Only last two months
+			# Only last month (it's a slice with the latest 30 days approx. So, a slice may contain data from different months)
 			self.amount_years = 1
-			self.amount_months = 2
+			self.amount_months = 1
 
 
 	def __insert_results(self, df, ticker):

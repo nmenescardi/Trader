@@ -27,6 +27,10 @@ class AlphaVantage():
 	def remove_extended_hours(self, data):
 		data['time'] = pd.to_datetime(data['time'])
 		data = data.set_index('time')
+		
+		# Fill data gaps
+		data = data.resample('5min').ffill()
+
 		return data.between_time('09:30', '16:00')
 
 
@@ -36,7 +40,6 @@ class AlphaVantage():
 
 		data = pd.read_csv(url.format(self.apiUrl, ticker, self.get_interval(interval), data_slice, adjusted,  self.key))
 
-		
 		print('Done slice {}. Ticker: {}. Waiting {} seconds...'.format(data_slice, ticker, seconds_to_wait))
 		time.sleep(seconds_to_wait)
 
