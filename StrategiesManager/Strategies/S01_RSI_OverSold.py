@@ -42,6 +42,9 @@ class RSI_OverSold:
 		
 		# Calculate RSI using Lower TimeFrame (ltf) data
 		data_ltf = self.dataProvider.get(symbol = ticker, interval = ltf_interval, period = ltf_period)
+
+		data_ltf = self.__fill_data_gaps(data_ltf)
+
 		df_ltf = StockDataFrame.retype(data_ltf)
 		
 		rsi_key = 'rsi_' + str(rsi_period)
@@ -102,3 +105,11 @@ class RSI_OverSold:
 		print(df)
 		pandas.reset_option('display.max_rows')
 		sys.stdout.flush()
+
+
+	def __fill_data_gaps(self, df, resample = '5min'):
+		
+		# Fill data gaps
+		df = df.resample(resample).ffill()
+
+		return df.between_time('09:30', '16:00')
