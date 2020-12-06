@@ -96,6 +96,7 @@ class RSI_OverSold:
 
 
 	def print_full(self, df):
+		import pandas as pd
 		pd.set_option('display.max_rows', len(df))
 		print(df)
 		pd.reset_option('display.max_rows')
