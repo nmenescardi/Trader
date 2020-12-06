@@ -93,3 +93,9 @@ class RSI_OverSold:
 		pandas.set_option('display.max_columns', None)
 		print(df.tail(rows))
 		sys.stdout.flush()
+
+
+	def print_full(self, df):
+		pd.set_option('display.max_rows', len(df))
+		print(df)
+		pd.reset_option('display.max_rows')
