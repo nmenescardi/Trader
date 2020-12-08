@@ -69,7 +69,7 @@ class StrategiesSetup():
 			{'ticker': 'MSCI', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 2 },	
 			{'ticker': 'MTCH', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'MTH', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 2 },	
-			{'ticker': 'NIO', 'rsi_period' : 2, 'rsi_limit': 10, 'tp_percentage': 15, 'days_between_orders' : 1 },	# Manual TP
+			{'ticker': 'NIO', 'rsi_period' : 2, 'rsi_limit': 10, 'tp_percentage': 15, 'days_between_orders' : 1, 'max_positions_amount': 5 },	# Manual TP
 			{'ticker': 'NIU', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 15 },	# Manual TP
 			{'ticker': 'NKE', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 3 },	
 			{'ticker': 'NOW', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 },	
@@ -157,7 +157,7 @@ class StrategiesSetup():
 			{'ticker': 'MU', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'NET', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'NTLA', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 1 },	
-			{'ticker': 'PANW', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 4 },	
+			#{'ticker': 'PANW', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 4 },	
 			{'ticker': 'PFGC', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 2 },	
 			{'ticker': 'PI', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'PLAY', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
