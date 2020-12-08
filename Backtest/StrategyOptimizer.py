@@ -1,4 +1,5 @@
 import os, sys, itertools
+from pathlib import Path
 from datetime import datetime
 import backtrader as bt
 from itertools import product
@@ -18,7 +19,8 @@ class StrategyOptimizer:
 	def run(self):
 		for optimization in self.optimizations:
 			
-			for ticker in ['AAPL', 'AAL', 'TSLA']:
+			for ticker in optimization['ticker_list']:
+
 				filename = ticker + '_5min' #TODO: no needed anymore
 				ticker_file_name = filename.split(".")[0]
 
@@ -27,7 +29,11 @@ class StrategyOptimizer:
 				if ticker_file_name in optimization['exclude']:
 					continue
 
-				results_file_path = "Backtest/results/{}/{}_{}.csv".format(optimization['results_folder'], ticker_file_name, optimization['from_date'].strftime('%Y-%m-%d'))
+				# Create directory if not exists
+				results_dir = "Backtest/results/{}/".format(optimization['results_folder'])
+				Path(results_dir).mkdir(parents=True, exist_ok=True)
+
+				results_file_path = "{}/{}_{}.csv".format(results_dir, ticker_file_name, optimization['from_date'].strftime('%Y-%m-%d'))
 				results_file_path = os.path.join(self.mod_path, results_file_path)
 
 				param_names = list(optimization['strategy_params'].keys())
@@ -43,8 +49,6 @@ class StrategyOptimizer:
 					print(ticker_file_name)
 
 					cerebro = bt.Cerebro(optreturn=False)
-
-					data_file_name = '{}/{}.csv'.format(optimization['dataset_dir'], ticker_file_name)
 
 					cerebro.adddata(data)
 
@@ -69,7 +73,6 @@ class StrategyOptimizer:
 	
 	def __fill_default(self, optimization):
 		default = {
-			'dataset_dir' : 'datasets/5min/',
 			'results_folder' : 'Default_Folder',
 			'startcash' : 10000,
 			'from_date' : datetime(2018,11,13),

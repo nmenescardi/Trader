@@ -1,11 +1,9 @@
-from __future__ import (absolute_import, division, print_function,
-						unicode_literals)
-import os.path
 
 from datetime import datetime
 from .Strategies.S01_RSI_OverSold import RSI_OverSold
 from .Strategies.S05_RSI_OSOB import RSI_OSOB
 from .StrategyOptimizer import StrategyOptimizer
+from Data.Stocks import Stocks
 
 import time
 
@@ -17,7 +15,7 @@ def run():
 	strategy_optimizer = StrategyOptimizer()
  
 	strategy_optimizer.add({
-		'dataset_dir' : 'datasets/test/',
+		'ticker_list' : Stocks().get_focus(), #TODO: Allow other lists
 		'results_folder' : 'test',
 		'strategy' : RSI_OverSold,
 		'strategy_params' : {
@@ -26,7 +24,7 @@ def run():
 			'take_profit' : [*range(1,6)],
 		},
 		'from_date' : datetime(2020,4,1),
-		'to_date' : datetime(2020,11,2),
+		#'to_date' : datetime(2020,11,2),
 		'dt_format' : '%Y-%m-%d %H:%M'
 	})
 
