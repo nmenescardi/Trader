@@ -11,8 +11,8 @@ class InsertIntradayData:
 
 		if full_data:
 			# Two years of data
-			self.amount_years = 2
-			self.amount_months = 12
+			self.amount_years = 1
+			self.amount_months = 11
 		else:
 			# Only last month (it's a slice with the latest 30 days approx. So, a slice may contain data from different months)
 			self.amount_years = 1
@@ -64,7 +64,7 @@ class InsertIntradayData:
 
 
 	def add_jobs(self):
-		for ticker in Stocks().get_all():
+		for ticker in Stocks().get_focus(): #Stocks().get_all():
 
 			for year in range(1, self.amount_years + 1):
 				for month in range(1, self.amount_months + 1):
