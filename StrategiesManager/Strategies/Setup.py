@@ -57,7 +57,7 @@ class StrategiesSetup():
 			{'ticker': 'IPHI', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 2 },	
 			{'ticker': 'IRTC', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 },	
 			#{'ticker': 'JD', 'rsi_period' : 9, 'rsi_limit': 30, 'tp_percentage': 5 }, #TODO: Map ticker -> URL
-			{'ticker': 'LAD', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 },	
+			#{'ticker': 'LAD', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 },	
 			{'ticker': 'LEN', 'rsi_period' : 25, 'rsi_limit': 30, 'tp_percentage': 1 },	
 			{'ticker': 'LOW', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 1 },	
 			{'ticker': 'LULU', 'rsi_period' : 9, 'rsi_limit': 25, 'tp_percentage': 1 },	
@@ -88,7 +88,7 @@ class StrategiesSetup():
 			{'ticker': 'POWI', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
 			{'ticker': 'PTON', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 3 },	
 			{'ticker': 'PYPL', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 5 },	
-			{'ticker': 'RGEN', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 1 },	
+			#{'ticker': 'RGEN', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 1 },	
 			{'ticker': 'RH', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 },	
 			{'ticker': 'ROKU', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'RS', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 2 },	
@@ -145,7 +145,7 @@ class StrategiesSetup():
 			{'ticker': 'DENN', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'DKNG', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 }, # manual TP	
 			{'ticker': 'EEFT', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
-			{'ticker': 'EV', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 },	
+			#{'ticker': 'EV', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 },	
 			{'ticker': 'EXPE', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },	
 			{'ticker': 'FIVE', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 },	
 			{'ticker': 'GWPH', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 1 },	
