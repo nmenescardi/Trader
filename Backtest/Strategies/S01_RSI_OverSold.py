@@ -41,8 +41,10 @@ class RSI_OverSold(Abstract_Strategy):
 
 	
 	def getParamsForResult(self):
-		return {
+		params =  {
 			'RSI Length' : [self.params.rsi_length],
 			'RSI Buy Limit' : [self.params.rsi_buy_limit],
 			'Take Profit' : [self.params.take_profit],
 		}
+		self.logger.info('0029 - Param combination: {}'.format(params))
+		return params

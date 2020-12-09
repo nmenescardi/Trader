@@ -4,12 +4,14 @@ from datetime import datetime
 import backtrader as bt
 from itertools import product
 from .DataFeed.MySQL import MySQL
+from Logger import Logger
 
 class StrategyOptimizer:
 
 	def __init__(self):
 		self.mod_path = os.path.dirname(os.path.abspath(sys.argv[0]))
 		self.optimizations = []
+		self.logger = Logger().get_logger()
 
 
 	def add(self, optimization):
@@ -20,6 +22,7 @@ class StrategyOptimizer:
 		for optimization in self.optimizations:
 			
 			for ticker in optimization['ticker_list']:
+				self.logger.info('0028 - Running optimization for {}'.format(ticker))
 
 				filename = ticker + '_5min' #TODO: no needed anymore
 				ticker_file_name = filename.split(".")[0]
@@ -51,7 +54,6 @@ class StrategyOptimizer:
 				)
 
 				for param_set in param_combinations:
-					print(ticker_file_name)
 
 					cerebro = bt.Cerebro(optreturn=False)
 

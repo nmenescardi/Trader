@@ -4,13 +4,14 @@ from .Strategies.S01_RSI_OverSold import RSI_OverSold
 from .Strategies.S05_RSI_OSOB import RSI_OSOB
 from .StrategyOptimizer import StrategyOptimizer
 from Data.Stocks import Stocks
-
+from Logger import Logger
 import time
 
 def run():
 	start_time = time.time()
 
-#if __name__ == '__main__':
+	logger = Logger().get_logger()
+	logger.info('0026 - Starting up optimization')
 
 	strategy_optimizer = StrategyOptimizer()
  
@@ -30,4 +31,5 @@ def run():
 
 	strategy_optimizer.run()
 
-	print("--- %s seconds ---" % (time.time() - start_time))
+	runtime_minutes = (time.time() - start_time) / 60
+	logger.info('0027 - Finishing up optimization. Runtime in minutes: {}'.format(runtime_minutes))

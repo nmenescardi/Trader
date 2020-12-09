@@ -1,6 +1,7 @@
 import os.path
 import backtrader as bt
 import pandas as pd
+from Logger import Logger
 
 class Abstract_Strategy(bt.Strategy):
 	params = (
@@ -21,6 +22,8 @@ class Abstract_Strategy(bt.Strategy):
 		self.order = None
 		self.buyprice = None
 		self.buycomm = None
+
+		self.logger = Logger().get_logger()
 
 	
 	def maybe_limit_number_bars(self):
@@ -96,7 +99,7 @@ class Abstract_Strategy(bt.Strategy):
 		
 		if should_print:
 			#TODO: Apply same commission
-			print('Buy and Hold Total Return {}%'.format(total_return))
+			self.logger.info('0030 - Buy and Hold Total Return {}%'.format(total_return))
 
 		return total_return
 
@@ -116,7 +119,7 @@ class Abstract_Strategy(bt.Strategy):
 			else:
 				data.to_csv(file_path, sep = ',', encoding = 'cp1251', index = False, mode='a', header=False)
 		except Exception as e:
-			print(e)
+			self.logger.info('0031 - Exception {}'.format(e))
 
 
 	# Override this method returning a dict with custom params to save into final report
@@ -152,8 +155,8 @@ class Abstract_Strategy(bt.Strategy):
 				results['Min # Bars'] = ta.len.min
 				results['Max # Bars'] = ta.len.max
 
-				print('Strategy Won {}. Lost {}.'.format(ta.won.total, ta.lost.total))
+				self.logger.info('0032 - Strategy Won {}. Lost {}.'.format(ta.won.total, ta.lost.total))
 		except Exception as e:
-			print('Exception trying to get Trade Analysis. Error: {}'.format(e))
+			self.logger.info('0033 - Exception trying to get Trade Analysis. Error: {}'.format(e))
 		
 		return pd.DataFrame(results)
