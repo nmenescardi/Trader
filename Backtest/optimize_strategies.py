@@ -16,12 +16,12 @@ def run():
  
 	strategy_optimizer.add({
 		'ticker_list' : Stocks().get_focus(), #TODO: Allow other lists
-		'results_folder' : 'test',
+		'results_folder' : '5Min_RSI_OverSold',
 		'strategy' : RSI_OverSold,
 		'strategy_params' : {
-			'rsi_length' : [5,14],#[5,9,14,25],
-			'rsi_buy_limit' : [5,15,25],#[*range(5,35,5), 2],
-			'take_profit' : [*range(1,6)],
+			'rsi_length' : [5,9,14,25],
+			'rsi_buy_limit' : [*range(5,35,5), 2],
+			'take_profit' : [*range(1,6), *range(7,15,2)],
 		},
 		'from_date' : datetime(2020,4,1),
 		#'to_date' : datetime(2020,11,2),

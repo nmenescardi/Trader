@@ -33,7 +33,12 @@ class StrategyOptimizer:
 				results_dir = "Backtest/results/{}/".format(optimization['results_folder'])
 				Path(results_dir).mkdir(parents=True, exist_ok=True)
 
-				results_file_path = "{}/{}_{}.csv".format(results_dir, ticker_file_name, optimization['from_date'].strftime('%Y-%m-%d'))
+				results_file_path = "{}/{}_{}_{}.csv".format(
+					results_dir, 
+					ticker_file_name, 
+					optimization['from_date'].strftime('%Y-%m-%d'),
+					optimization['to_date'].strftime('%Y-%m-%d')
+				)
 				results_file_path = os.path.join(self.mod_path, results_file_path)
 
 				param_names = list(optimization['strategy_params'].keys())
