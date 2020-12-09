@@ -3,10 +3,12 @@ from Data.Stocks import Stocks
 from Data.AlphaVentageJobs import AlphaVentageJobs
 from DataFeed.AlphaVantage import AlphaVantage
 import sys
+import ssl
 
 class InsertIntradayData:
 
 	def __init__(self, full_data = False):
+		ssl._create_default_https_context = ssl._create_unverified_context
 		self.failed_jobs_dao = AlphaVentageJobs()
 
 		if full_data:
