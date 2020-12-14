@@ -9,6 +9,7 @@ from Order_Queues.Order_Queues import Order_Queues
 from Logger import Logger
 from Data.GeneralConfig import GeneralConfig
 from Exceptions.NotAvailableFund import NotAvailableFund
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Load Env variables:
 load_dotenv()
@@ -41,7 +42,7 @@ def open_session():
 	options.add_argument("--disable-blink-features=AutomationControlled")
 	options.add_argument("--start-maximized")
 	options.add_argument("--kiosk")
-	driver = webdriver.Chrome(executable_path=CHROME_DRIVER_PATH, options=options)
+	driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
 	try:
 		eToro = EToro(driver, credentials, logger, order_queues, IS_VIRTUAL_PORTFOLIO, SHOULD_OPEN_SINGLE_POSITION)
