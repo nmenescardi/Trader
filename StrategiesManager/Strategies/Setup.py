@@ -199,7 +199,6 @@ class StrategiesSetup():
 			{'ticker': 'DE', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'DIS', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'DLTR', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 },	
-			{'ticker': 'DNKN', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'DOV', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'DRE', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 },	
 			{'ticker': 'DTE', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 },	

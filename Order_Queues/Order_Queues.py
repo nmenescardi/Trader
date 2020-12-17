@@ -117,7 +117,7 @@ class Order_Queues:
 
 		if available_balance <= 500:
 			return 50
-		elif available_balance > 500 and available_balance < 3500:
+		elif available_balance > 350 and available_balance < 1000:
 			return 100
 		else:
 			return 200
