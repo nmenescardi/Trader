@@ -1195,6 +1195,24 @@ VALUES
 	('NET','NYSE')
 ;
 
+
+INSERT IGNORE INTO stocks 
+	(ticker, exchanger)
+VALUES
+	('ALV','NYSE'),
+	('WORK','NYSE'),
+	('NKLA','NASDAQ');
+
+INSERT IGNORE INTO stocks 
+	(ticker, exchanger)
+VALUES
+	('DASH','NYSE'),
+	('ABNB','NASDAQ'),
+	('ALVR','NASDAQ'),
+	('ZS','NASDAQ'),
+	('WDAY','NASDAQ'),
+	('PLUG','NASDAQ');
+
 INSERT IGNORE INTO strategies 
 	(name, version, type)
 VALUES
@@ -1220,3 +1238,13 @@ INSERT IGNORE INTO stock_list
 	(stock_id, list_id)
 VALUES
 	(356, 2),(313, 2),(30, 2),(391, 2),(441, 2),(262, 2),(455, 2),(458, 2),(464, 2),(310, 2),(186, 2),(241, 2),(208, 2),(679, 2),(686, 2),(714, 2),(874, 2),(877, 2),(905, 2),(910, 2),(136, 2),(938, 2),(266, 2),(978, 2),(980, 2),(1000, 2);
+	
+INSERT IGNORE INTO stock_list 
+	(stock_id, list_id)
+VALUES
+	(17342, 2),(17344, 2),(17343, 2);
+
+INSERT IGNORE INTO stock_list 
+	(stock_id, list_id)
+VALUES	
+(17346, 2),(235, 2),(17342, 2),(17347, 2),(172, 2),(282, 2),(97, 2),(80, 2),(467, 2),(200, 2),(260, 2),(17345, 2),(205, 2),(545, 2),(77, 2),(213, 2),(206, 2),(660, 2),(330, 2),(137, 2),(743, 2),(17344, 2),(112, 2),(248, 2),(210, 2),(17350, 2),(88, 2),(133, 2),(304, 2),(201, 2),(147, 2),(17349, 2),(17343, 2),(17348, 2);
