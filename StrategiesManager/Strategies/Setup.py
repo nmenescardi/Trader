@@ -11,7 +11,7 @@ class StrategiesSetup():
 			{'ticker': 'AMD', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 2 },
 			{'ticker': 'AMZN', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 1 },
 			{'ticker': 'ANSS', 'rsi_period' : 14, 'rsi_limit': 10, 'tp_percentage': 1 },
-			{'ticker': 'BABA', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 },
+			#{'ticker': 'BABA', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 },
 			{'ticker': 'BBBY', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 },
 			{'ticker': 'BYD', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 1 },
 			{'ticker': 'BYND', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 2 },
@@ -104,7 +104,7 @@ class StrategiesSetup():
 			{'ticker': 'STNE', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 1 }, 
 			{'ticker': 'TGT', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 2 }, 
 			{'ticker': 'TMO', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 2 }, 
-			{'ticker': 'TOL', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 5 }, 
+			{'ticker': 'TOL', 'rsi_period' : 9, 'rsi_limit': 5, 'tp_percentage': 5 }, 
 			{'ticker': 'TREX', 'rsi_period' : 9, 'rsi_limit': 25, 'tp_percentage': 3 }, 
 			{'ticker': 'TSLA', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'TTD', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 }, 
@@ -113,17 +113,17 @@ class StrategiesSetup():
 			{'ticker': 'TWTR', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 }, # Efficient
 			{'ticker': 'UPS', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 1 }, 
 			{'ticker': 'VEEV', 'rsi_period' : 9, 'rsi_limit': 30, 'tp_percentage': 1 }, 
-			{'ticker': 'W', 'rsi_period' : 9, 'rsi_limit': 30, 'tp_percentage': 1 }, 
+			#{'ticker': 'W', 'rsi_period' : 9, 'rsi_limit': 30, 'tp_percentage': 1 }, 
 			{'ticker': 'WIX', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 4 }, 
 			{'ticker': 'Z', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 3 }, 
 			{'ticker': 'ZEN', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 4 }, 
-			{'ticker': 'ZM', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 }, 
+			#{'ticker': 'ZM', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'ZNGA', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 }, 
 			{'ticker': 'ZTS', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 1 },
    
 			# Focus 2
 			{'ticker': 'ABBV', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 }, 
-			{'ticker': 'ABC', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 2 }, 
+			#{'ticker': 'ABC', 'rsi_period' : 9, 'rsi_limit': 15, 'tp_percentage': 2 }, 
 			{'ticker': 'ABCB', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 }, 
 			{'ticker': 'ABG', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'ABT', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 3 },
@@ -148,8 +148,8 @@ class StrategiesSetup():
 			#{'ticker': 'EV', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 2 }, 
 			{'ticker': 'EXPE', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'FIVE', 'rsi_period' : 14, 'rsi_limit': 20, 'tp_percentage': 1 }, 
-			{'ticker': 'GWPH', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 1 }, 
-			{'ticker': 'HDS', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 3 }, 
+			#{'ticker': 'GWPH', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 1 }, 
+			#{'ticker': 'HDS', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 3 }, 
 			{'ticker': 'KTOS', 'rsi_period' : 9, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'LPSN', 'rsi_period' : 5, 'rsi_limit': 30, 'tp_percentage': 1 }, 
 			{'ticker': 'LYFT', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 3 }, 
@@ -208,7 +208,7 @@ class StrategiesSetup():
 			{'ticker': 'GL', 'rsi_period' : 14, 'rsi_limit': 15, 'tp_percentage': 1 }, 
 			{'ticker': 'GOOG', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 2 }, 
 			{'ticker': 'GRMN', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 }, 
-			{'ticker': 'HOLX', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 3 }, 
+			#{'ticker': 'HOLX', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 3 }, 
 			{'ticker': 'HON', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 }, 
 			{'ticker': 'HUBS', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'IDXX', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 3 }, # Duplicated to test	
@@ -240,7 +240,7 @@ class StrategiesSetup():
 			{'ticker': 'PWR', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 }, 
 			{'ticker': 'QTWO', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'RACE', 'rsi_period' : 9, 'rsi_limit': 10, 'tp_percentage': 3 }, 
-			{'ticker': 'RSG', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 4 }, 
+			#{'ticker': 'RSG', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 4 }, 
 			{'ticker': 'SHAK', 'rsi_period' : 25, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'SHW', 'rsi_period' : 9, 'rsi_limit': 25, 'tp_percentage': 1 }, 
 			{'ticker': 'SNE', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 }, 
@@ -277,7 +277,7 @@ class StrategiesSetup():
 			{'ticker': 'RNG', 'rsi_period' : 25, 'rsi_limit': 15, 'tp_percentage': 1 }, # Efficient
 			{'ticker': 'RNG', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 3 }, # Winner
 			{'ticker': 'SIX', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 3 }, # Winner 
-			{'ticker': 'SPCE', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 7 }, # Winner
+			{'ticker': 'SPCE', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 7 }, # Winner # Manual TP
 			{'ticker': 'SUMO', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 5 }, # Winner
 			{'ticker': 'SXT', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 9 }, # Winner
 			{'ticker': 'TACO', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 1 }, # Efficient
