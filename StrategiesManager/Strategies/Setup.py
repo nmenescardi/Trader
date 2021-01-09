@@ -294,6 +294,20 @@ class StrategiesSetup():
 			{'ticker': 'TX', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 5 }, # Winner
 			{'ticker': 'U', 'rsi_period' : 5, 'rsi_limit': 25, 'tp_percentage': 5 }, # Winner
 			{'ticker': 'VIPS', 'rsi_period' : 5, 'rsi_limit': 10, 'tp_percentage': 3 }, 
+   
+			# New tickers from JAN/9/2020
+			{'ticker': 'BIDU', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 4 }, 
+			{'ticker': 'LITE', 'rsi_period' : 5, 'rsi_limit': 5, 'tp_percentage': 5 }, 
+			{'ticker': 'SNPS', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 3 }, 
+			{'ticker': 'TTWO', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 2 }, 
+			{'ticker': 'EDIT', 'rsi_period' : 9, 'rsi_limit': 20, 'tp_percentage': 3 }, 
+			{'ticker': 'EDIT', 'rsi_period' : 5, 'rsi_limit': 20, 'tp_percentage': 11 }, 
+			{'ticker': 'ARWR', 'rsi_period' : 14, 'rsi_limit': 30, 'tp_percentage': 5 }, 
+			{'ticker': 'FEYE', 'rsi_period' : 25, 'rsi_limit': 15, 'tp_percentage': 1 }, 
+			{'ticker': 'NTAP', 'rsi_period' : 14, 'rsi_limit': 25, 'tp_percentage': 1 }, 
+			{'ticker': 'BMRN', 'rsi_period' : 9, 'rsi_limit': 25, 'tp_percentage': 3 }, 
+			{'ticker': 'CREE', 'rsi_period' : 14, 'rsi_limit': 10, 'tp_percentage': 3 }, 
+			{'ticker': 'SFIX', 'rsi_period' : 5, 'rsi_limit': 15, 'tp_percentage': 7 }, 
 
 		]
 	}
