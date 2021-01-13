@@ -1211,6 +1211,7 @@ VALUES
 	('ALVR','NASDAQ'),
 	('ZS','NASDAQ'),
 	('WDAY','NASDAQ'),
+	('FOLD','NASDAQ'),
 	('PLUG','NASDAQ');
 
 INSERT IGNORE INTO strategies 
