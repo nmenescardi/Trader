@@ -1,5 +1,7 @@
 import os, redis, pickle
 from dotenv import load_dotenv
+from datetime import datetime
+import numpy as np
 
 class Order_Queues:
 	def __init__(self):
@@ -16,6 +18,7 @@ class Order_Queues:
 		self.last_orders_queue = os.getenv("REDIS_LAST_ORDERS_QUEUE_KEY")
 		self.positions_amount_queue = os.getenv("REDIS_POSITIONS_AMOUNT_QUEUE_KEY")
 		self.available_balance = os.getenv("REDIS_AVAILABLE_BALANCE")
+		self.last_positions_update = os.getenv("REDIS_LAST_POSITIONS_UPDATE")
 
 
 	def get_position_to_open(self):
@@ -70,8 +73,6 @@ class Order_Queues:
 		)
 
 	def is_there_a_recent_order(self, ticker, days_between_orders = 2, date_to_compare = None):
-		from datetime import datetime
-		import numpy as np
 		last_order = self.get_order(ticker)
   
 		if last_order is None:
@@ -124,6 +125,39 @@ class Order_Queues:
 
 	def set_available_balance(self, balance):
 		self.redisClient.hset(self.available_balance, 'available_balance', balance)
+
+
+	def should_update_positions(self, days_between_updates = 1):
+		last_positions_update = self.get_last_portfolio_positions_update()
+
+		if last_positions_update is None:
+			return True
+
+		current_timestamp = datetime.now()
+
+		days_since_last_update = np.busday_count(last_positions_update.date(), current_timestamp.date())
+
+		if days_since_last_update >= days_between_updates:
+			return True
+		return False
+
+	def get_last_portfolio_positions_update(self):
+		last_positions_update = self.__maybe_decode_utf8(
+    		self.redisClient.hget(self.last_positions_update, 'last_positions_update')
+		)
+
+		if last_positions_update is not None:
+			last_positions_update = datetime.fromisoformat(last_positions_update)
+		return last_positions_update
+
+	def update_last_portfolio_positions_flag(self, date_to_save = None):
+		if date_to_save is None:
+			date_to_save = datetime.now().date()
+
+		if not isinstance(date_to_save, str):
+			date_to_save = date_to_save.isoformat()
+		
+		self.redisClient.hset(self.last_positions_update, 'last_positions_update', date_to_save)
 
 
 	def __maybe_decode_utf8_as_int(self, payload, default = 0):

@@ -48,8 +48,6 @@ def open_session():
 		eToro = EToro(driver, credentials, logger, order_queues, IS_VIRTUAL_PORTFOLIO, SHOULD_OPEN_SINGLE_POSITION)
 		eToro.init()
 
-		general_config = GeneralConfig()
-
 		while True:
 			try:
 				ticker_to_close = order_queues.get_ticker_to_close()
@@ -77,10 +75,10 @@ def open_session():
 				else:
 					# NO position to be open at the moment.
 					# Check if it should update positions
-					if general_config.should_update_positions():
+					if order_queues.should_update_positions():
 						order_queues.empty_positions_amount_queue() # empty old list
 						eToro.update_amount_opened_positions()
-						general_config.update_last_portfolio_positions_flag()
+						order_queues.update_last_portfolio_positions_flag()
 
 			except NotAvailableFund as e:
 				order_queues.remove_position_from_open()
